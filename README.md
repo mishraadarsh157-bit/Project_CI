@@ -1,6 +1,6 @@
 # My Project 🚀
 
-👉 [Click here to open project](https://your-link.com)
+👉 [Click here to open project](http://localhost/project_CI/dashboard)
 
 ## Features
 - ✅ Login system
