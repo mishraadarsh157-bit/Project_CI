@@ -1,0 +1,225 @@
+Here's a step-by-step CodeIgniter (CI) tutorial for database CRUD (Create, Read, Update, Delete) operations:
+
+## Step 1: Set up CodeIgniter and Database
+1. Download and install CodeIgniter.
+2. Create a new database and update the `database.php` file in `application/config` with your database credentials.
+
+## Step 2: Create a Model
+Create a new file `application/models/Student_model.php` and add the following code:
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Student_model extends CI_Model {
+
+    public function get_students() {
+        $query = $this->db->get('students');
+        return $query->result();
+    }
+
+    public function insert_student($data) {
+        $this->db->insert('students', $data);
+        return $this->db->insert_id();
+    }
+
+    public function get_student($id) {
+        $query = $this->db->get_where('students', array('id' => $id));
+        return $query->row();
+    }
+
+    public function update_student($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('students', $data);
+    }
+
+    public function delete_student($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('students');
+    }
+}
+
+## Step 3: Create a Controller
+Create a new file `application/controllers/Student.php` and add the following code:
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Student extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('student_model');
+    }
+
+    public function index() {
+        $data['students'] = $this->student_model->get_students();
+        $this->load->view('student_view', $data);
+    }
+
+    public function create() {
+        $this->load->view('create_student_view');
+    }
+
+    public function store() {
+        $data = array(
+            'name' => $this->input->post('name'),
+            'email' => $this->input->post('email'),
+            'phone' => $this->input->post('phone')
+        );
+        $this->student_model->insert_student($data);
+        redirect('student');
+    }
+
+    public function edit($id) {
+        $data['student'] = $this->student_model->get_student($id);
+        $this->load->view('edit_student_view', $data);
+    }
+
+    public function update($id) {
+        $data = array(
+            'name' => $this->input->post('name'),
+            'email' => $this->input->post('email'),
+            'phone' => $this->input->post('phone') 
+        );
+        $this->student_model->update_student($id, $data);
+        redirect('student');
+    }
+
+    public function delete($id) {
+        $this->student_model->delete_student($id);
+        redirect('student');
+    }
+}
+
+## Step 4: Create Views
+Create the following views:
+
+- `application/views/student_view.php`
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+    </tr>
+    <?php foreach ($students as $student) { ?>
+    <tr>
+        <td><?php echo $student->name; ?></td>
+        <td><?php echo $student->email; ?></td>
+        <td><?php echo $student->phone; ?></td>
+        <td>
+            <a href="<?php echo site_url('student/edit/'.$student->id); ?>">Edit</a>
+            <a href="<?php echo site_url('student/delete/'.$student->id); ?>">Delete</a>
+        </td>
+    </tr>
+    <?php } ?>
+</table>
+
+- `application/views/create_student_view.php`
+<form method="post" action="<?php echo site_url('student/store'); ?>">
+    <label>Name:</label>
+    <input type="text" name="name">
+    <label>Email:</label>
+    <input type="email" name="email">
+    <label>Phone:</label>
+    <input type="text" name="phone">
+    <input type="submit" value="Create">
+</form>
+
+- `application/views/edit_student_view.php`
+<form method="post" action="<?php echo site_url('student/update/'.$student->id); ?>">
+    <label>Name:</label>
+    <input type="text" name="name" value="<?php echo $student->name; ?>">
+    <label>Email:</label>
+    <input type="email" name="email" value="<?php echo $student->email; ?>">
+    <label>Phone:</label>
+    <input type="text" name="phone" value="<?php echo $student->phone; ?>">
+    <input type="submit" value="Update">
+</form>
+
+## Step 5: Test the Application
+1. Access the application by visiting `http://localhost/your_project/student`.
+2. Create, read, update, and delete student records.
+
+That's it! You've successfully implemented CRUD operations in CodeIgniter. 😊
+$this->db->select('*');
+$this->db->from('users');
+$this->db->where('status', 1);
+$this->db->order_by('id', 'DESC');
+$query = $this->db->get()->result();
+
+$this->db->like('name', 'john');
+$this->db->join('orders', 'orders.user_id = users.id');
+$this->db->limit(10, 0);
+$this->db->group_by('status');
+
+$this->session->set_userdata('user_id', $id);
+$this->session->userdata('user_id');
+$this->session->unset_userdata('user_id');
+$this->session->sess_destroy();
+
+$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+$this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+
+if ($this->form_validation->run()) {
+    // success
+} else {
+    // validation error
+}
+
+<?php
+class Login_model extends CI_Model {
+
+    public function __construct() {
+        parent::__construct();
+    }
+
+    // Check login
+    public function check_login($email, $password) {
+
+        $this->db->where('email', $email);
+        $query = $this->db->get('users');
+
+        if ($query->num_rows() == 1) {
+
+            $user = $query->row();
+
+            // Verify password (if hashed)
+            if (password_verify($password, $user->password)) {
+                return $user; // success
+            } else {
+                return false; // wrong password
+            }
+
+        } else {
+            return false; // email not found
+        }
+    }
+}
+class Login extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('Login_model');
+    }
+
+    public function index() {
+        $this->load->view('login_view');
+    }
+
+    public function authenticate() {
+
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+
+        $user = $this->Login_model->check_login($email, $password);
+
+        if ($user) {
+            // Create session
+            $this->session->set_userdata('user_id', $user->id);
+            $this->session->set_userdata('email', $user->email);
+
+            echo "success";
+        } else {
+            echo "invalid";
+        }
+    }
+}
