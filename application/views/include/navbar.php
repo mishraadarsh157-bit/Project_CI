@@ -4,13 +4,13 @@
             <img src="./assets/images/logo.webp" height="30px" alt="">
         </div>
 
-        <div class="timeline">
+        <!-- <div class="timeline">
             <a class='anchor' href="<?php echo base_url('/usermaster') ?>">
                 <span>Users</span>
             </a>
             <span>Clients</span>
             <span>Items</span>
-        </div>
+        </div> -->
 
         <div class="d-flex align-items-center">
 

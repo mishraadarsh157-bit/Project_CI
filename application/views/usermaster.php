@@ -35,7 +35,7 @@
           <div class="table-data w-100 border ">
             <table class='table mb-5 table-light table-striped table-hover '>
               <thead>
-                <tr class="">
+                <tr class="box-shadow">
                   <th>Id</th>
                   <th>Action</th>
                   <th>Name</th>

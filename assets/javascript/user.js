@@ -1,5 +1,8 @@
 if (window.location.href == base_url + "usermaster") {
-	$(".side-button:eq(0)").css("background", "white");
+	$(".side-button:eq(0)").css({
+		"background": "black",
+		"color":"white"
+	});
 }
 
 function fetchData() {
@@ -31,7 +34,7 @@ function fetchData() {
 				table += `<td>${value["email"]}</td>`;
 				table += `<td>${value["phone"]}</td>`;
 				if (value["STATUS"] == 1) {
-					var status = '<button class="edit-btn w-75">Active</button>';
+					var status = '<button class="edit-btn box-shadow w-75">Active</button>';
 				} else {
 					var status = '<button class="delete-btn w-75">Inactive</button>';
 				}
