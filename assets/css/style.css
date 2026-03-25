@@ -144,28 +144,38 @@ margin: 00px 2%;
 	text-decoration: none;
 	color: black;
 }
-
+.anchor b{
+	display: none;
+}
+.anchor i{
+	display: inline-flex;
+}
+ .side-button:hover b{
+	display: inline-flex;
+}
 .custom-sidebar{
 	margin-top: 100px;
     height: 80vh;
     margin-left: 2%;
     width: 5vw;
     border-radius: 2.5vw;
-    /* background: #a0a0a0aa; */
-    padding: 6px;
+	z-index: 500;
+	padding: 6px;
     padding-top: 10px;
     position: fixed;
-	box-shadow: 2px 2px 3px black;
 }
+
+
 .side-button{
 	color: white;
     height: 8vh;
     width: 4vw;
-    display: block;
+	
+	box-shadow: 2px 2px 3px black;
     border-radius: 50%;
-	transition: all ease-in-out .5s;
 }
 .side-button:hover{
+	width: 9.2vw;
 	color: #000;
     background-color: white;
 }

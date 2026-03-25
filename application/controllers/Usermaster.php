@@ -6,6 +6,7 @@ class Usermaster extends CI_controller
 	{
 		parent::__construct();
 		$this->load->library('session');
+		$this->load->library('form_validation');
 		$this->load->model('crud_model');
 		$user = $this->session->userdata('user_id');
 		if (!$user) {
@@ -16,30 +17,96 @@ class Usermaster extends CI_controller
 	{
 		$this->load->view('usermaster');
 	}
-	public function fetch()
-	{
-		$data['product_details'] = $this->crud_model->getAll('users');
+	public function fetch(
+		
+	)
+	{	
+		$status=$_POST['status']??"";
+		$search=$_POST['search']??"";
+		$field=$_POST['field']??"id";
+		$order=$_POST['order']??"asc";
+		$limit=$_POST['limit']??20;
+		$offset=$_POST['offset']??0;
+		// $search,$field,$order,$limit,$offset
+		$data['data'] = $this->crud_model->getAll('users',$status,$search,$field,$order,$limit,$offset );
 		echo json_encode($data);
 	}
 
 	public function insert()
 	{
-		
-		$password = $this->input->post('password');
-		$hashed_password=password_hash($password, PASSWORD_DEFAULT);
-		$data = array(
-			'name' => $this->input->post('name'),
-			'email' => $this->input->post('email'),
-			'pass' =>$hashed_password,
-			'phone' => $this->input->post('phone')
-		);
-		$result=$this->crud_model->insert('users',$data);
-		if($result){
-			echo 'done';
+
+		if ($this->form_validation->run('usersValid') === FALSE) {
+			echo  validation_errors();
+		} else {
+			$name = trim($this->input->post('name'));
+			$email = trim($this->input->post('email'));
+
+			$phone = trim($this->input->post('phone'));
+			$password = trim($this->input->post('password'));
+			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+			$data = array(
+				'name' => $name,
+				'email' => $email,
+				'pass' => $hashed_password,
+				'phone' => $phone
+			);
+			$result = $this->crud_model->insert('users', $data);
+			if ($result) {
+				echo 'inserted';
+			} else {
+				echo 0;
+			}
 		}
-		else{
+		// }
+	}
+	public function edit($id)
+	{
+
+		$data[] = $this->crud_model->getUser('users', $id);
+		$dataa['data'] = $data;
+		echo json_encode($dataa);
+	}
+	public function update($id)
+	{
+		if ($this->form_validation->run('updateUser') === FALSE) {
+			echo  validation_errors();
+		} else {
+			$name = trim($this->input->post('name'));
+			$email = trim($this->input->post('email'));
+			$exist = $this->crud_model->if_exist('users', 'email', $email, $id);
+			if ($exist) {
+				echo "email_exists";
+			} else {
+
+
+				$phone = trim($this->input->post('phone'));
+				$data = array(
+					'name' => $name,
+					'email' => $email,
+					'phone' => $phone
+				);
+				$result = $this->crud_model->update('users', $data, 'id', $id);
+
+				if ($result) {
+					echo 'updated';
+				} else {
+					echo 0;
+				}
+			}
+		}
+	}
+	public function delete($id)
+	{
+		$result = $this->crud_model->delete('users', 'id', $id);
+		if ($result) {
+			echo 'deleted';
+		} else {
 			echo 0;
 		}
-		
 	}
 }
+
+
+
+// $autoload['helper'] = array('url' , 'form' , 'cookie');
+// $autoload['libraries'] = array('database' , 'session');

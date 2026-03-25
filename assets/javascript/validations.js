@@ -1,0 +1,183 @@
+function validName(name) {            ////////////////////////////////name
+  const pattern=/^([a-zA-Z ]){2,30}$/;
+
+  if (name.trim() == "") {
+    $(".name_valid").show();
+    $(".name_valid").text("Enter name").css("color", "red");
+    return false;
+    
+  }
+  else if(pattern.test(name.trim())==false){
+
+    $(".name_valid").show();
+    $(".name_valid").text("Enter valid name").css("color", "red");
+    return false;
+    
+  }
+  else{
+    
+    $(".name_valid").hide();
+    return true;
+    }
+}
+function validPass(password) {
+    const value = password.trim();
+    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+.])[a-zA-Z0-9!@#$%^&*()\-.+]{8,20}$/;
+
+    if (value === "") {
+        $(".pass_valid")
+            .show()
+            .text("Password is required")
+            .css("color", "red");
+        return false;
+    }
+
+    if (value.length < 8 || value.length > 20) {
+        $(".pass_valid")
+            .show()
+            .text("Password must be 8–20 characters long")
+            .css("color", "red");
+        return false;
+    }
+
+    if (!regex.test(value)) {
+        $(".pass_valid")
+            .show()
+            .html("Password must include:<br>• 1 uppercase<br>• 1 lowercase<br>• 1 number<br>• 1 special character")
+            .css("color", "red");
+        return false;
+    }
+
+    $(".pass_valid").hide()
+
+    return true;
+}
+
+function validNumber(number){                          ///////////////////////number
+  var phoneno = /[0-9]{10,10}$/;
+
+  if (number.trim() == "") {
+    $(".number_valid").show();
+    $(".number_valid").text("Enter Number").css("color", "red");
+    return false;
+}else if(phoneno.test(number.trim())==false){
+  $(".number_valid").show();
+    $(".number_valid").text("Enter Valid Number").css("color", "red");
+  return false;
+}
+else if(number.trim().length !==10){
+ $(".number_valid").show();
+    $(".number_valid").text("Enter 10 Digit number").css("color", "red");
+  return false;
+}
+else{
+    $(".number_valid").hide();
+    return true;
+  }
+
+}
+
+function validEmail(email){                          //////////////////email
+ const regex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+ if(email.trim()==''){
+    $(".email_valid").show();
+    $(".email_valid").text("Enter email").css("color", "red");
+    return false
+ }else if(regex.test(email.trim())==false){
+    $(".email_valid").show();
+    $(".email_valid").text("Enter valid eamil").css("color", "red");
+return false
+  }else{
+    $(".email_valid").hide();
+    return true
+  }
+}
+function validAddress(address)
+{
+  if (address.trim() == "") {
+    $(".address_valid").show();
+    $(".address_valid").text("enter address").css("color", "red");
+  return false    
+  }
+  else{
+    
+    $(".address_valid").hide();
+    return true
+  }
+}
+function validPincode(pincode){
+  if (pincode.trim() == "") {
+    $(".pincode_valid").show();
+    $(".pincode_valid").text("enter pincode").css("color", "red");
+    return false
+  }
+  
+  else{
+    
+    $(".pincode_valid").hide();
+    return true
+  }
+}
+function validPrice(price){
+    if (price.trim() == "") {
+    $(".price_valid").show();
+    $(".price_valid").text("enter price").css("color", "red");
+    return false
+  }
+  
+  else{
+    
+    $(".price_valid").hide();
+    return true
+  }
+}
+
+function validDescription(des){
+    if (des.trim() == "") {
+    $(".des_valid").show();
+    $(".des_valid").text("enter Description").css("color", "red");
+    return false
+  }
+  
+  else{
+    
+    $(".des_valid").hide();
+    return true
+  }
+}
+
+function validState(state){
+  if(state.trim()==""){
+    $(".state_valid").show()
+    $(".state_valid").text("plese select state").css('color','red')
+    return false
+  }
+  else if(state.trim()=="----Select State----"){
+    $(".state_valid").show()
+    $(".state_valid").text("plese select state").css('color','red')
+    return false
+  }
+  else{
+    $(".state_valid").hide()
+    return true
+    
+  }
+}
+
+function validCity(city){
+  if(city.trim()==""){
+    $(".city_valid").show()
+    $(".city_valid").text("plese select city").css('color','red')
+    return false
+  }
+  else if(city.trim()=="----Select City----"){
+    $(".city_valid").show()
+    $(".city_valid").text("plese select city").css('color','red')
+    return false
+  }
+  else{
+    $(".city_valid").hide()
+    return true
+
+      }
+}

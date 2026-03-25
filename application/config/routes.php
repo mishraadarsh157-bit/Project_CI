@@ -63,3 +63,6 @@ $route['dashboard'] = 'dashboard';
 $route['usermaster'] = 'usermaster';
 $route['userfetch'] = 'usermaster/fetch';
 $route['userinsert'] = 'usermaster/insert';
+$route['useredit/(:num)'] = 'usermaster/edit/$1';
+$route['userupdate/(:num)'] = 'usermaster/update/$1';
+$route['userdelete/(:num)'] = 'usermaster/delete/$1';
