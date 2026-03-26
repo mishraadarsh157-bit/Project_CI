@@ -66,3 +66,13 @@ $route['userinsert'] = 'usermaster/insert';
 $route['useredit/(:num)'] = 'usermaster/edit/$1';
 $route['userupdate/(:num)'] = 'usermaster/update/$1';
 $route['userdelete/(:num)'] = 'usermaster/delete/$1';
+
+
+$route['clientmaster'] = 'clientmaster';
+$route['clientfetch'] = 'clientmaster/fetch';
+$route['fetchstates'] = 'clientmaster/fetchstates';
+$route['fetchcities/(:num)'] = 'clientmaster/fetchcities/$1';
+$route['clientinsert'] = 'clientmaster/insert';
+$route['clientedit/(:num)'] = 'clientmaster/edit/$1';
+$route['clientupdate/(:num)'] = 'clientmaster/update/$1';
+$route['clientdelete/(:num)'] = 'clientmaster/delete/$1';

@@ -11,17 +11,17 @@ class Usermaster extends CI_controller
 		$user = $this->session->userdata('user_id');
 		if (!$user) {
 			redirect(base_url('/login'));
-		}
-	}
-	public function index()
-	{
-		$this->load->view('usermaster');
-	}
-	public function fetch(
-		
-	)
-	{	
-		$status=$_POST['status']??"";
+			}
+			}
+			public function index()
+			{
+				$this->load->view('usermaster');
+				}
+				public function fetch(
+					
+					)
+					{	
+						$status=$_POST['status']??"";
 		$search=$_POST['search']??"";
 		$field=$_POST['field']??"id";
 		$order=$_POST['order']??"asc";
@@ -29,6 +29,9 @@ class Usermaster extends CI_controller
 		$offset=$_POST['offset']??0;
 		// $search,$field,$order,$limit,$offset
 		$data['data'] = $this->crud_model->getAll('users',$status,$search,$field,$order,$limit,$offset );
+		$data['pages'] = $this->crud_model->getAll('users',$status,$search,$field,$order,100,0 );
+
+		
 		echo json_encode($data);
 	}
 
@@ -73,6 +76,7 @@ class Usermaster extends CI_controller
 		} else {
 			$name = trim($this->input->post('name'));
 			$email = trim($this->input->post('email'));
+			$status = trim($this->input->post('status'));
 			$exist = $this->crud_model->if_exist('users', 'email', $email, $id);
 			if ($exist) {
 				echo "email_exists";
@@ -83,7 +87,8 @@ class Usermaster extends CI_controller
 				$data = array(
 					'name' => $name,
 					'email' => $email,
-					'phone' => $phone
+					'phone' => $phone,
+					'STATUS' => $status
 				);
 				$result = $this->crud_model->update('users', $data, 'id', $id);
 

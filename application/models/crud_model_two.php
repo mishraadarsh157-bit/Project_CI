@@ -1,22 +1,24 @@
 <?php
 
-class crud_model extends CI_Model
+class crud_model_two extends CI_Model
 {
     public function __construct()
     {
         parent::__construct();
         $this->load->database(); // IMPORTANT
     }
-    public function getAll($table,$status,$search,$field,$order,$limit,$offset)
+    public function getAll($table1,$table2,$table3,$status,$search,$field,$order,$limit,$offset)
     {
         $this->db->select('*');
-        $this->db->from($table);
-		$user = $this->session->userdata('user_id');
-        $this->db->where('id !=', $user);
-        $this->db->like('status', $status);
+        $this->db->from($table1);
+        $this->db->join($table2, 'client.city_id = cities.id', 'inner');
+        $this->db->join($table3, 'client.state_id = states.id', 'inner');
+		// $user = $this->session->userdata('user_id');
+        // $this->db->where('id !=', $user);
+        $this->db->like('client_status', $status);
         $this->db->group_start();
-        $this->db->like('name', $search);
-        $this->db->or_like('email', $search);
+        $this->db->like('client_name', $search);
+        $this->db->or_like('client_email', $search);
         $this->db->or_like('phone', $search);
         $this->db->group_end();
         $this->db->order_by($field, $order);
@@ -37,10 +39,15 @@ class crud_model extends CI_Model
         return $this->db->insert_id();
     }
 
-    public function getUser($table, $data)
+    public function getClient($table, $data)
     {
-        $query = $this->db->get_where($table, array('id' => $data));
-        return $query->row();
+        $query = $this->db->get_where($table, array('client_id' => $data));
+        if($query){
+            return $query->row();
+        }
+        else{
+            return false;
+        }
     }
     public function if_exist($table, $field, $value, $id)
     {
@@ -82,4 +89,31 @@ class crud_model extends CI_Model
             return false;
         }
     }
-}
+    public function states($table){
+       $this->db->select('*');
+        $this->db->from($table);
+        $query = $this->db->get();
+        if($query){
+            return $query->result();
+        }
+        else{
+            echo 0;
+        }
+       
+    }
+      public function cities($table,$state){
+       $this->db->select('*');
+       $this->db->where('state_id',$state);
+
+        $this->db->from($table);
+        $query = $this->db->get();
+        if($query){
+            return $query->result();
+        }
+        else{
+            echo 'city';
+        }
+       
+    }
+
+    }

@@ -1,9 +1,11 @@
-if (window.location.href == base_url + "usermaster") {
-	$(".side-button:eq(0)").css({
+console.log('here')
+if (window.location.href == base_url + "clientmaster") {
+	$(".side-button:eq(1)").css({
 		background: "black",
 		color: "white",
 	});
 }
+
 
 $(document).on("click", ".sortable", function () {
     let newColumn = $(this).data("column");
@@ -33,7 +35,7 @@ function fetchData(page) {
 	let limit=$('.limit').val()??5;
 	let offset=Number(page-1)*limit??0;
 	$.ajax({
-		url: base_url + "/userfetch/",
+		url: base_url + "/clientfetch/",
 		type: "POST",
 		data:{
 			status:status,
@@ -60,7 +62,7 @@ function fetchData(page) {
 				table += `<td>${index}</td>`;
 				table += `<td class='text-center'>
 				<button class="edit-btn box-shadow
-				 text-center update_form" data-uid="${value["id"]}">
+				 text-center update_form" data-uid="${value["client_id"]}">
 				<i class="bi bi-pen-fill"></i>
 				</button>         
 				<button class=" delete-btn delete box-shadow text-center" id='delete' data-did="${value["id"]}">
@@ -68,10 +70,12 @@ function fetchData(page) {
 				</button>         
 				
                 </td>`;
-				table += `<td class='text-primary'><i class='update_form' data-uid='${value["id"]}'>${value["name"]}</i></td>`;
-				table += `<td>${value["email"]}</td>`;
+				table += `<td class='text-primary'><i class='update_form' data-uid='${value["client_id"]}'>${value["client_name"]}</i></td>`;
+				table += `<td>${value["client_email"]}</td>`;
 				table += `<td>${value["phone"]}</td>`;
-				if (value["STATUS"] == 1) {
+				table += `<td>${value["address"]},${value["city"]} (${value["name"]})</td>`;
+				table += `<td>${value["pincode"]}</td>`;
+				if (value["client_status"] == 1) {
 					var status =
 					'<button class="edit-btn box-shadow w-75">Active</button>';
 				} else {
@@ -116,7 +120,7 @@ function fetchData(page) {
 			$(".page").html(pagi);
 		}
 		else{
-			table ="<tr><td class='text-center' colspan='6'><h1>No Users Found</h1></td></tr>"
+			table ="<tr><td class='text-center' colspan='8'><h1>No Clients Found</h1></td></tr>"
 			$(".load_data").html(table);
 		}
 		},
@@ -182,8 +186,47 @@ function resetBTN() {
 }
 
 
+function loadstates(){
+	$.ajax({
+		url: base_url + "/fetchstates/",
+		type: "POST",
+		success: function (data) {
+			data=JSON.parse(data)
+			console.log(data)
+			
+			let states ="<select id='state' name='state' class='selected_state form-select'>";
+			data.forEach(function(value){
+				states +=`<option value='${value['id']}'>${value['name']}</option>`;
+				})
+				states +="</select>";
+			$('.states_area').html(states)
+		}
+	})
+}
 
+$(document).on('change','.selected_state',function(){
+	let state=$(this).val()
+	loadcity(state)
+})
 
+function loadcity(state){
+	$.ajax({
+		url: base_url + "/fetchcities/"+state,
+		type: "POST",
+		success: function (data) {
+			data=JSON.parse(data)
+			console.log(data)
+			
+			let states ="<select id='city' name='city' class='form-select'>";
+			data.forEach(function(value){
+				console.log(value['city'])
+				states +=`<option value='${value['id']}'>${value['city']}</option>`;
+				})
+				states +="</select>";
+			$('.cities_area').html(states)
+		}
+	})
+}
 
 
 
@@ -196,8 +239,8 @@ $(document).on("click", "#submitForm", function () {
 	let id = $("#id").val() ?? "";
 	if (!id.trim() == "") {
 		Swal.fire({
-			title: "User Not Found?",
-			text: "Some MissHappening Created By User",
+			title: "Client Not Found?",
+			text: "Some MissHappening Created By Client",
 			icon: "question",
 		});
 		return false;
@@ -210,18 +253,31 @@ $(document).on("click", "#submitForm", function () {
 	if (!validEmail(email)) {
 		return;
 	}
-	let pass = $("#password").val() ?? "";
-	if (!validPass(pass)) {
-		return;
-	}
-
 	let phone = $("#phone").val() ?? "";
 	if (!validNumber(phone)) {
 		return;
 	}
+	let address=$('#address').val()??"";
+	if(!validAddress(address)){
+		return
+	}
+	let state=$('#state').val()??"";
+	if(!validState(state)){
+		return
+	}	
+	let city=$('#city').val()??"";
+	if(!validState(city)){
+		return
+	}
+
+	let pincode=$('#pincode').val()??"";
+	if(!validAddress(pincode)){
+		return
+	}
+
 	let form = new FormData(myForm);
 	$.ajax({
-		url: base_url + "/userinsert",
+		url: base_url + "/clientinsert",
 		type: "POST",
 		data: form,
 		processData: false,
@@ -243,7 +299,7 @@ $(document).on("click", "#submitForm", function () {
 					icon: "question",
 				});
 			} else {
-				$('.allusr').trigger('click')
+				$('.allcli').trigger('click')
 				fetchData()
 				Swal.fire({
 					title: "Drag me!",
@@ -257,12 +313,12 @@ $(document).on("click", "#submitForm", function () {
 
 $(document).on("click", ".update_form", function () {
 	
-	$(".addusr").trigger("click");
-	$(".addusr").text('Update User')
+	$(".addcli").trigger("click");
+	$(".addcli").text('Update Client')
 	$(".submit_area").html('<button type="button" id="UpdateForm" class="btn btn-primary w-100">\Update\</button>')
 	let id = $(this).data("uid");
 	$.ajax({
-		url: base_url + "/useredit/" + id,
+		url: base_url + "/clientedit/" + id,
 		type: "POST",
 		success: function (data) {
 			data = JSON.parse(data);
@@ -270,18 +326,21 @@ $(document).on("click", ".update_form", function () {
 			
 			data.data.forEach(function (value) {
 				$("#id").val(value["id"]);
-				$("#name").val(value["name"]);
-				$("#email").val(value["email"]);
+				$("#name").val(value["client_name"]);
+				$("#email").val(value["client_email"]);
 				$("#phone").val(value["phone"]);
-				 if (value["STATUS"] == 1) {
+				$("#state").val(value["state_id"]);
+				
+				$("#city").val(value["city_id"]);
+				 if (value["client_status"] == 1) {
           var status = "ACTIVE";
         } else {
           var status = "INACTIVE";
         }
         $(".pss")
-          .html(`Status<select id='user_status' name='status' class='form-select ' value='${value["STATUS"]}'>
+          .html(`Status<select id='client_status' name='status' class='form-select ' value='${value["client_status"]}'>
           
-          <option value='${value["STATUS"]}'>${status}</option>
+          <option value='${value["client_status"]}'>${status}</option>
           
           <option disabled>Select Status</option>
           <option value='1'>ACTIVE</option>
@@ -297,8 +356,8 @@ $(document).on("click", "#UpdateForm", function () {
 	let id = $("#id").val() ?? "";
 	if (id.trim() == "") {
 		Swal.fire({
-			title: "User Not Found?",
-			text: "Some MissHappening Created By User",
+			title: "Client Not Found?",
+			text: "Some MissHappening Created By Client",
 			icon: "question",
 		});
 		return false;
@@ -317,7 +376,7 @@ $(document).on("click", "#UpdateForm", function () {
 	}
 	let form = new FormData(myForm);
 	$.ajax({
-		url: base_url + "/userupdate/"+ id,
+		url: base_url + "/clientupdate/"+ id,
 		type: "POST",
 		data: form,
 		processData: false,
@@ -345,17 +404,17 @@ $(document).on("click", "#UpdateForm", function () {
 					draggable: true,
 				});
 				fetchData()
-				$(".allusr").trigger("click");
+				$(".allcli").trigger("click");
 
 			}
 		},
 	});
 });
 
-$('.allusr').on('click',function(){
+$('.allcli').on('click',function(){
 	$('.submit_area').html('<button type="button" id="submitForm" class="btn btn-primary w-100">Submit</button>')
 	$('#myForm').trigger('reset')
-	$('.addusr').text('Add User')
+	$('.addcli').text('Add Client')
 	$('.pss').html('<label class="form-label">Password</label>\
                 <input type="password" name="password" id="password" class="form-control"\
                   required minlength="8" maxlength="20"\
@@ -384,7 +443,7 @@ $(document).on('click','.delete',function(){
   if (result.isConfirmed){ 
 	
 	$.ajax({
-		url: base_url + "/userdelete/" + id,
+		url: base_url + "/clientdelete/" + id,
 		type: "POST",
 		success:function(data){
 			console.log(data)
