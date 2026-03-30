@@ -1,6 +1,5 @@
-console.log("here");
-if (window.location.href == base_url + "clientmaster") {
-	$(".side-button:eq(1)").css({
+if (window.location.href == base_url + "itemmaster") {
+	$(".side-button:eq(2)").css({
 		background: "black",
 		color: "white",
 	});
@@ -34,10 +33,9 @@ function fetchData(page) {
 	let limit = $(".limit").val() ?? 5;
 	let offset = Number(page - 1) * limit ?? 0;
 	$.ajax({
-		url: base_url + "/clientfetch/",
+		url: base_url + "/itemfetch/",
 		type: "POST",
 		data: {
-			status: status,
 			search: search,
 			field: field,
 			order: order,
@@ -60,27 +58,17 @@ function fetchData(page) {
 					table += `<td>${index}</td>`;
 					table += `<td class='text-center'>
 				<button class="edit-btn box-shadow
-				 text-center update_form" data-uid="${value["client_id"]}">
+				 text-center update_form" data-uid="${value["item_id"]}">
 				<i class="bi bi-pen-fill"></i>
 				</button>         
-				<button class=" delete-btn delete box-shadow text-center" id='delete' data-did="${value["client_id"]}">
+				<button class=" delete-btn delete box-shadow text-center" id='delete' data-did="${value["item_id"]}">
 				<i class="bi bi-trash3"></i>
 				</button>         
 				
                 </td>`;
-					table += `<td class='text-primary'><i class='update_form' data-uid='${value["client_id"]}'>${value["client_name"]}</i></td>`;
-					table += `<td>${value["client_email"]}</td>`;
-					table += `<td>${value["phone"]}</td>`;
-					table += `<td>${value["address"]},${value["city"]} (${value["name"]})</td>`;
-					table += `<td>${value["pincode"]}</td>`;
-					if (value["client_status"] == 1) {
-						var status =
-							'<button class="edit-btn box-shadow w-75">Active</button>';
-					} else {
-						var status =
-							'<button class="delete-btn  box-shadow w-75">Inactive</button>';
-					}
-					table += `<td>${status}</td>`;
+					table += `<td class='text-primary'><img src='${base_url}${value["item_image"]}' height='30px' width='30px' class='rounded-pill me-3'><i class='update_form' data-uid='${value["item_id"]}'>${value["item_name"]}</i></td>`;
+					table += `<td>${value["description"]}</td>`;
+					table += `<td>${value["price"]}</td>`;
 
 					table += "</tr>";
 
@@ -118,7 +106,7 @@ function fetchData(page) {
 				$(".page").html(pagi);
 			} else {
 				table =
-					"<tr><td class='text-center' colspan='8'><h1>No Clients Found</h1></td></tr>";
+					"<tr><td class='text-center' colspan='6'><h1>No Items Found</h1></td></tr>";
 				$(".load_data").html(table);
 			}
 		},
@@ -177,56 +165,14 @@ function resetBTN() {
 	var page = $("#invis").val();
 	fetchData(Number(page));
 }
-
-async function loadstates() {
-	await $.ajax({
-		url: base_url + "/fetchstates/",
-		type: "POST",
-		success: function (data) {
-			data = JSON.parse(data);
-			console.log(data);
-
-			let states =
-				"<select id='state' name='state' class='selected_state form-select'>";
-			data.forEach(function (value) {
-				states += `<option value='${value["id"]}'>${value["name"]}</option>`;
-			});
-			states += "</select>";
-			$(".states_area").html(states);
-		},
-	});
-}
-
-$(document).on("change", ".selected_state", function () {
-	let state = $(this).val();
-	loadcity(state);
-});
-
-function loadcity(state) {
-	$.ajax({
-		url: base_url + "/fetchcities/" + state,
-		type: "POST",
-		success: function (data) {
-			data = JSON.parse(data);
-			console.log(data);
-
-			let states = "<select id='city' name='city' class='form-select'>";
-			data.forEach(function (value) {
-				console.log(value["city"]);
-				states += `<option value='${value["id"]}'>${value["city"]}</option>`;
-			});
-			states += "</select>";
-			$(".cities_area").html(states);
-		},
-	});
-}
+//////////////>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 $(document).on("click", "#submitForm", function () {
 	let id = $("#id").val() ?? "";
 	if (!id.trim() == "") {
 		Swal.fire({
-			title: "Client Not Found?",
-			text: "Some MissHappening Created By Client",
+			title: "Invalid Entries?",
+			text: "Some MissHappening Created By Item",
 			icon: "question",
 		});
 		return false;
@@ -235,35 +181,19 @@ $(document).on("click", "#submitForm", function () {
 	if (!validName(name)) {
 		return;
 	}
-	let email = $("#email").val() ?? "";
-	if (!validEmail(email)) {
-		return;
-	}
-	let phone = $("#phone").val() ?? "";
-	if (!validNumber(phone)) {
-		return;
-	}
-	let address = $("#address").val() ?? "";
-	if (!validAddress(address)) {
-		return;
-	}
-	let state = $("#state").val() ?? "";
-	if (!validState(state)) {
-		return;
-	}
-	let city = $("#city").val() ?? "";
-	if (!validState(city)) {
+	let des = $("#description").val() ?? "";
+	if (!validDescription(des)) {
 		return;
 	}
 
-	let pincode = $("#pincode").val() ?? "";
-	if (!validAddress(pincode)) {
+	let price = $("#price").val() ?? "";
+	if (!validPrice(price)) {
 		return;
 	}
 
 	let form = new FormData(myForm);
 	$.ajax({
-		url: base_url + "/clientinsert",
+		url: base_url + "/iteminsert",
 		type: "POST",
 		data: form,
 		processData: false,
@@ -271,114 +201,76 @@ $(document).on("click", "#submitForm", function () {
 
 		success: function (data) {
 			console.log(data);
-			 let msg = data.toString().trim();
-
-    msg = msg.replace(/<[^>]*>/g, '').trim();
-
-    msg = msg.replace(/^"|"$/g, '');
-			if (data.trim() == 0) {
+			if (data.trim() == "inserted") {
 				Swal.fire({
-					icon: "error",
-					title: "Oops...",
-					text: "Data not Inserted!",
-					footer: "<b>Why do I have this issue?</b>",
-				});
-			} else if (msg.toLowerCase().startsWith('valid')) {
-				Swal.fire({
-					title: "Enter valid details!",
-					text: "Try again",
-					icon: "error",
-				});
-				return false;
-			} else {
-				$(".allcli").trigger("click");
-				fetchData();
-				Swal.fire({
-					title: "Drag me!",
+					title: "Inserted!",
 					icon: "success",
 					draggable: true,
+				});
+			} else {
+				Swal.fire({
+					title: data,
+					text: "Try again!",
+					icon: "question",
 				});
 			}
 		},
 	});
 });
 
-$(document).on("click", ".update_form", async function () {
-	// debugger;
-	await $(".addcli").trigger("click");
-	$(".addcli").text("Update Client");
+function itmImg(event) {
+	const imgPrieview = $(".itemImage");
+	const files = event.target.files;
+	if (files.length > 0) {
+		const file = files[0];
+		const tempUrl = URL.createObjectURL(file);
+		$(".itemImage").attr("src", tempUrl);
+		imgPrieview.onload = function () {
+			URL.revokeObjectURL(this.src);
+		};
+	}
+}
+
+function resetImage() {
+	$("#item_image").val("");
+	$(".itemImage").attr("src", "");
+}
+
+$(document).on("click", ".update_form", function () {
+	$(".addusr").trigger("click");
+	$(".addusr").text("Update Item");
 	$(".submit_area").html(
 		'<button type="button" id="UpdateForm" class="btn btn-primary w-100">\Update\</button>',
 	);
 	let id = $(this).data("uid");
 	$.ajax({
-		url: base_url + "/clientedit/" + id,
+		url: base_url + "/itemedit/" + id,
 		type: "POST",
 		success: function (data) {
 			data = JSON.parse(data);
 			console.log(data);
 
-			data.data.forEach(async function (value) {
-				$("#id").val(value["client_id"]);
-				$("#name").val(value["client_name"]);
-				$("#email").val(value["client_email"]);
-				$("#phone").val(value["phone"]);
-				$("#state").val(Number(value["state_id"]));
-				let state = $("#state").val();
-				console.log(state);
-				loadCity(state);
-				$("#address").val(value["address"]);
-				$("#pincode").val(value["pincode"]);
-
-				async function loadCity(state) {
-					await $.ajax({
-						url: base_url + "/fetchcities/" + state,
-						type: "POST",
-						data: {
-							city: "city",
-							state: state,
-						},
-						success: function (data) {
-							data = JSON.parse(data);
-							var row =
-								"<select name='city' class='form-select' id='city' value''><option value=''>----Select City----</option>";
-							data.forEach(function (value) {
-								row += `<option  value='${value["id"]}'>${value["city"]}</option>`;
-							});
-							row += "</select>";
-							$(".cities_area").html(row);
-
-							$("#city").val(value["city_id"]);
-						},
-					});
-				}
-
-				if (value["client_status"] == 1) {
-					var status = "ACTIVE";
-				} else {
-					var status = "INACTIVE";
-				}
-				$(".status_area")
-					.html(` <label class="form-label">Status</label><select id='client_status' name='status' class='form-select ' value='${value["client_status"]}'>
-						
-						<option value='${value["client_status"]}'>${status}</option>
-						
-						<option disabled>Select Status</option>
-						<option value='1'>ACTIVE</option>
-						<option value='0'>INACTIVE</option>
-						</select>`);
+			data.data.forEach(function (value) {
+				$("#id").val(value["item_id"]);
+				$("#name").val(value["item_name"]);
+				$("#description").val(value["description"]);
+				$("#price").val(value["price"]);
+				// $("#image").val(value["item_image"]);
+				$(".itemImage").attr("src", `/project_CI/${value["item_image"]}`);
 			});
+			$(".itemSaver").html(
+				' <button type="button" id="UpdateForm" name="" class="btn btn-outline-primary">UPADTE</button>',
+			);
 		},
 	});
 });
 
 $(document).on("click", "#UpdateForm", function () {
-	// debugger;
 	let id = $("#id").val() ?? "";
 	if (id.trim() == "") {
 		Swal.fire({
-			title: "Client Not Found?",
-			text: "Some MissHappening Created By Client",
+			title: "Item Not Found?",
+			text: "Some MissHappening Created By Item",
 			icon: "question",
 		});
 		return false;
@@ -387,17 +279,18 @@ $(document).on("click", "#UpdateForm", function () {
 	if (!validName(name)) {
 		return;
 	}
-	let email = $("#email").val() ?? "";
-	if (!validEmail(email)) {
+	let des = $("#description").val() ?? "";
+	if (!validDescription(des)) {
 		return;
 	}
-	let phone = $("#phone").val() ?? "";
-	if (!validNumber(phone)) {
+
+	let price = $("#price").val() ?? "";
+	if (!validPrice(price)) {
 		return;
 	}
 	let form = new FormData(myForm);
 	$.ajax({
-		url: base_url + "/clientupdate/" + id,
+		url: base_url + "/itemupdate/" + id,
 		type: "POST",
 		data: form,
 		processData: false,
@@ -405,38 +298,33 @@ $(document).on("click", "#UpdateForm", function () {
 
 		success: function (data) {
 			console.log(data);
-			if (data.trim() == 0) {
-				Swal.fire({
-					icon: "error",
-					title: "Oops...",
-					text: "Data not Inserted!",
-					footer: "<b>Why do I have this issue?</b>",
-				});
-			} else if (data.trim() == "email_exists") {
-				Swal.fire({
-					title: "This Email already exists!",
-					text: "Try another email",
-					icon: "question",
-				});
+			if (data.trim() == "updated") {
+				if (data.trim() == "updated") {
+					Swal.fire({
+						title: "Updated!",
+						icon: "success",
+						draggable: true,
+					});
+					fetchData();
+					$(".allusr").trigger("click");
+				}
 			} else {
 				Swal.fire({
-					title: "Drag me!",
-					icon: "success",
-					draggable: true,
+					title: data,
+					text: "Try again!",
+					icon: "question",
 				});
-				fetchData();
-				$(".allcli").trigger("click");
 			}
 		},
 	});
 });
 
-$(".allcli").on("click", function () {
+$(".allusr").on("click", function () {
 	$(".submit_area").html(
 		'<button type="button" id="submitForm" class="btn btn-primary w-100">Submit</button>',
 	);
 	$("#myForm").trigger("reset");
-	$(".addcli").text("Add Client");
+	$(".addusr").text("Add Item");
 	$(".pss").html(
 		'<label class="form-label">Password</label>\
                 <input type="password" name="password" id="password" class="form-control"\
@@ -450,7 +338,6 @@ $(".allcli").on("click", function () {
 	$(".eamil_valid").hide();
 	$(".pass_valid").hide();
 	$(".number_valid").hide();
-	$(".status_area").html("");
 });
 
 $(document).on("click", ".delete", function () {
@@ -466,32 +353,26 @@ $(document).on("click", ".delete", function () {
 	}).then((result) => {
 		if (result.isConfirmed) {
 			$.ajax({
-				url: base_url + "/clientdelete/" + id,
+				url: base_url + "/itemdelete/" + id,
 				type: "POST",
 				success: function (data) {
 					console.log(data);
 					if (data.trim() == "deleted") {
-						fetchData();
+						let page = $("#invis").val();
+						fetchData(page);
+
 						Swal.fire({
 							title: "Deleted!",
 							text: "Your file has been deleted.",
 							icon: "success",
 						});
-						let page = $("#invis").val();
-						fetchData(page);
-					} else if (data.trim() == 0) {
+					} else {
 						Swal.fire({
 							icon: "error",
 							title: "Oops...",
-							text: "Unable to delete this client!",
-							footer: '<a href="#">This client Have some Incoices Left</a>',
+							text: "Unable to delete this item!",
+							footer: '<a href="#">This item Have Some data in invoice?</a>',
 						});
-
-						let page = $("#invis").val();
-						fetchData(page);
-					} else {
-						let page = $("#invis").val();
-						fetchData(page);
 					}
 				},
 			});
@@ -501,3 +382,4 @@ $(document).on("click", ".delete", function () {
 		}
 	});
 });
+

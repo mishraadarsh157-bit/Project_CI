@@ -26,8 +26,8 @@ class Clientmaster extends CI_controller
 		$limit = $_POST['limit'] ?? 20;
 		$offset = $_POST['offset'] ?? 0;
 		// $search,$field,$order,$limit,$offset
-		$data['data'] = $this->crud_model_two->getAll('client','cities','states', $status, $search, $field, $order, $limit, $offset);
-		$data['pages'] = $this->crud_model_two->getAll('client','cities','states', $status, $search, $field, $order, 100, 0);
+		$data['data'] = $this->crud_model_two->getAll('client', 'cities', 'states', $status, $search, $field, $order, $limit, $offset);
+		$data['pages'] = $this->crud_model_two->getAll('client', 'cities', 'states', $status, $search, $field, $order, 100, 0);
 
 
 		echo json_encode($data);
@@ -37,7 +37,7 @@ class Clientmaster extends CI_controller
 	{
 		if ($this->form_validation->run('clientsValid') === false) {
 			echo "valid";
-			echo  validation_errors();
+			echo  json_encode(validation_errors());
 		} else {
 			$name = trim($this->input->post('name'));
 			$email = trim($this->input->post('email'));
@@ -73,13 +73,19 @@ class Clientmaster extends CI_controller
 	}
 	public function update($id)
 	{
+		
 		if ($this->form_validation->run('updateClient') === FALSE) {
 			echo  validation_errors();
 		} else {
 			$name = trim($this->input->post('name'));
 			$email = trim($this->input->post('email'));
+			$address = trim($this->input->post('address'));
+			$email = trim($this->input->post('email'));
+			$state = trim($this->input->post('state'));
+			$city = trim($this->input->post('city'));
+			$pincode = trim($this->input->post('pincode'));
 			$status = trim($this->input->post('status'));
-			$exist = $this->crud_model->if_exist('clients', 'email', $email, $id);
+			$exist = $this->crud_model_two->if_exist('client', 'client_email', $email, $id);
 			if ($exist) {
 				echo "email_exists";
 			} else {
@@ -87,12 +93,17 @@ class Clientmaster extends CI_controller
 
 				$phone = trim($this->input->post('phone'));
 				$data = array(
-					'name' => $name,
-					'email' => $email,
+					'client_name' => $name,
+					'client_email' => $email,
+					'address' => $address,
+					'state_id' => $state,
+					'city_id' => $city,
 					'phone' => $phone,
-					'STATUS' => $status
+					'pincode' => $pincode,
+					'client_status' => $status,
 				);
-				$result = $this->crud_model->update('clients', $data, 'id', $id);
+				
+				$result = $this->crud_model_two->update('client', $data, 'client_id', $id);
 
 				if ($result) {
 					echo 'updated';
@@ -104,32 +115,32 @@ class Clientmaster extends CI_controller
 	}
 	public function delete($id)
 	{
-		$result = $this->crud_model->delete('clients', 'id', $id);
+		// echo "this $id";
+		$result = $this->crud_model_two->delete('client', 'client_id', $id);
 		if ($result) {
 			echo 'deleted';
 		} else {
 			echo 0;
 		}
 	}
-	public function fetchstates(){
-		$result=$this->crud_model_two->states('states');
-		if($result){
-			echo json_encode( $result);
-		}
-		else{
+	public function fetchstates()
+	{
+		$result = $this->crud_model_two->states('states');
+		if ($result) {
+			echo json_encode($result);
+		} else {
 			echo "---";
 		}
 	}
-	public function fetchcities($state){
-		$result=$this->crud_model_two->cities('cities',$state);
-		if($result){
-			echo json_encode( $result);
-		}
-		else{
+	public function fetchcities($state)
+	{
+		$result = $this->crud_model_two->cities('cities', $state);
+		if ($result) {
+			echo json_encode($result);
+		} else {
 			echo "---";
 		}
 	}
-
 }
 
 

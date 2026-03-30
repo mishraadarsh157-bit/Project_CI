@@ -273,3 +273,19 @@ background-color: white;
 	border-radius: 10px;
 	border: 1px solid grey;
 }
+
+.user_div{
+	border-radius: 10px;
+	height: 150px;
+	background: linear-gradient(90deg,red,red,orangered,white);
+}
+.hover-cards{
+	background-color: white;
+	transition: all ease-in-out .5s;
+	height: 100px;
+}
+
+.hover-cards:hover{
+	background-color: rgb(145, 233, 46);
+	height: 110px;
+}

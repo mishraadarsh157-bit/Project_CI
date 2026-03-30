@@ -1,16 +1,11 @@
  <div class="custom-navbar">
 
         <div class="schedule-btn">
-            <img src="./assets/images/logo.webp" height="30px" alt="">
-        </div>
+            <a href="<?php echo base_url('/dashboard') ?>">
 
-        <!-- <div class="timeline">
-            <a class='anchor' href="<?php echo base_url('/usermaster') ?>">
-                <span>Users</span>
+                <img src="./assets/images/logo.webp" height="30px" alt="">
             </a>
-            <span>Clients</span>
-            <span>Items</span>
-        </div> -->
+        </div>
 
         <div class="d-flex align-items-center">
 

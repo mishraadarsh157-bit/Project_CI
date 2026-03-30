@@ -53,13 +53,13 @@ $route['default_controller'] = 'Login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// $route['First'] = 'First';
-// $route['fetch'] = 'First/fetch';
-// $route['insert'] = 'First/insert';
-// $route['edit/(:num)'] = 'First/edit/$1';
 $route['login'] = 'Login';
 $route['logged_in'] = 'Login/logged_in';
 $route['dashboard'] = 'dashboard';
+$route['dashfetch'] = 'dashboard/fetch';
+
+////user
+
 $route['usermaster'] = 'usermaster';
 $route['userfetch'] = 'usermaster/fetch';
 $route['userinsert'] = 'usermaster/insert';
@@ -67,6 +67,7 @@ $route['useredit/(:num)'] = 'usermaster/edit/$1';
 $route['userupdate/(:num)'] = 'usermaster/update/$1';
 $route['userdelete/(:num)'] = 'usermaster/delete/$1';
 
+/////client
 
 $route['clientmaster'] = 'clientmaster';
 $route['clientfetch'] = 'clientmaster/fetch';
@@ -76,3 +77,24 @@ $route['clientinsert'] = 'clientmaster/insert';
 $route['clientedit/(:num)'] = 'clientmaster/edit/$1';
 $route['clientupdate/(:num)'] = 'clientmaster/update/$1';
 $route['clientdelete/(:num)'] = 'clientmaster/delete/$1';
+
+////item
+
+$route['itemmaster'] = 'itemmaster';
+$route['itemfetch'] = 'itemmaster/fetch';
+$route['iteminsert'] = 'itemmaster/insert';
+$route['itemedit/(:num)'] = 'itemmaster/edit/$1';
+$route['itemupdate/(:num)'] = 'itemmaster/update/$1';
+$route['itemdelete/(:num)'] = 'itemmaster/delete/$1';
+
+//////invoice
+
+$route['invoice'] = 'invoice';
+$route['invoicefetch'] = 'invoice/fetch';
+$route['invoiceClient/(:any)'] = 'invoice/invoiceClient/$1';
+$route['invoiceClientdata/(:any)'] = 'invoice/invoiceClientdata/$1';
+$route['invoiceItem'] = 'invoice/invoiceItem';
+$route['invoiceItemdata'] = 'invoice/invoiceItemdata';
+$route['InvoiceNo'] = 'invoice/invNo';
+$route['invoiceInsert'] = 'invoice/insert';
+$route['invoiceUpdateForm/(:num)'] = 'invoice/updateform/$1';

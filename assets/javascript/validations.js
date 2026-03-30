@@ -181,3 +181,29 @@ function validCity(city){
 
       }
 }
+
+$("#image").on("change", function () {
+
+    let file = this.files[0];
+
+    if (!file) return;
+
+    let allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    let maxSize = 2 * 1024 * 1024; // 2MB
+
+    // Type check
+    if (!allowedTypes.includes(file.type)) {
+        $(".image_valid").text("Only JPG, JPEG, PNG allowed");
+        this.value = "";
+        return;
+    }
+
+    // Size check
+    if (file.size > maxSize) {
+        $(".image_valid").text("Max size is 2MB");
+        this.value = "";
+        return;
+    }
+
+    $(".image_valid").text(""); // clear error
+});

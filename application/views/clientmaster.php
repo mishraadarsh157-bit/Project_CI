@@ -87,7 +87,7 @@
               
              
 
-  <input type="number" hidden disabled name='id' id='id'>
+  <input type="number" hidden  disabled name='id' id='id'>
 
   <!-- Name -->
   <div class="mb-3 col-6">
@@ -155,6 +155,9 @@
       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
       title="Enter 6 digit pincode">
       <div class="pincode_valid"></div>
+  </div>
+  <div class="mb-3 col-6 status_area">
+
   </div>
 
   <!-- Submit -->
