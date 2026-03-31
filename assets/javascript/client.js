@@ -1,4 +1,3 @@
-console.log("here");
 if (window.location.href == base_url + "clientmaster") {
 	$(".side-button:eq(1)").css({
 		background: "black",
@@ -51,8 +50,6 @@ function fetchData(page) {
 				let table = "";
 				let total_records = data.pages.length;
 				let total_pages = Math.ceil(total_records / limit);
-				console.log(total_records);
-				console.log(total_pages);
 				data.data.forEach(function (value, index) {
 					ind = index + 1;
 					index = (page - 1) * limit + ind;
@@ -184,10 +181,10 @@ async function loadstates() {
 		type: "POST",
 		success: function (data) {
 			data = JSON.parse(data);
-			console.log(data);
 
 			let states =
 				"<select id='state' name='state' class='selected_state form-select'>";
+				states += `<option value=''>----Select States----</option>`;
 			data.forEach(function (value) {
 				states += `<option value='${value["id"]}'>${value["name"]}</option>`;
 			});
@@ -208,11 +205,9 @@ function loadcity(state) {
 		type: "POST",
 		success: function (data) {
 			data = JSON.parse(data);
-			console.log(data);
 
 			let states = "<select id='city' name='city' class='form-select'>";
 			data.forEach(function (value) {
-				console.log(value["city"]);
 				states += `<option value='${value["id"]}'>${value["city"]}</option>`;
 			});
 			states += "</select>";
@@ -270,7 +265,6 @@ $(document).on("click", "#submitForm", function () {
 		contentType: false,
 
 		success: function (data) {
-			console.log(data);
 			 let msg = data.toString().trim();
 
     msg = msg.replace(/<[^>]*>/g, '').trim();
@@ -316,7 +310,6 @@ $(document).on("click", ".update_form", async function () {
 		type: "POST",
 		success: function (data) {
 			data = JSON.parse(data);
-			console.log(data);
 
 			data.data.forEach(async function (value) {
 				$("#id").val(value["client_id"]);
@@ -325,7 +318,6 @@ $(document).on("click", ".update_form", async function () {
 				$("#phone").val(value["phone"]);
 				$("#state").val(Number(value["state_id"]));
 				let state = $("#state").val();
-				console.log(state);
 				loadCity(state);
 				$("#address").val(value["address"]);
 				$("#pincode").val(value["pincode"]);
@@ -404,7 +396,6 @@ $(document).on("click", "#UpdateForm", function () {
 		contentType: false,
 
 		success: function (data) {
-			console.log(data);
 			if (data.trim() == 0) {
 				Swal.fire({
 					icon: "error",
@@ -469,7 +460,6 @@ $(document).on("click", ".delete", function () {
 				url: base_url + "/clientdelete/" + id,
 				type: "POST",
 				success: function (data) {
-					console.log(data);
 					if (data.trim() == "deleted") {
 						fetchData();
 						Swal.fire({

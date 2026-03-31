@@ -50,8 +50,6 @@ function fetchData(page) {
 				let table = "";
 				let total_records = data.pages.length;
 				let total_pages = Math.ceil(total_records / limit);
-				console.log(total_records);
-				console.log(total_pages);
 				data.data.forEach(function (value, index) {
 					ind = index + 1;
 					index = (page - 1) * limit + ind;
@@ -211,7 +209,6 @@ $(document).on("click", "#submitForm", function () {
 		contentType: false,
 
 		success: function (data) {
-			console.log(data);
 			if (data.trim() == 0) {
 				Swal.fire({
 					icon: "error",
@@ -250,7 +247,6 @@ $(document).on("click", ".update_form", function () {
 		type: "POST",
 		success: function (data) {
 			data = JSON.parse(data);
-			console.log(data);
 
 			data.data.forEach(function (value) {
 				$("#id").val(value["id"]);
@@ -307,7 +303,6 @@ $(document).on("click", "#UpdateForm", function () {
 		contentType: false,
 
 		success: function (data) {
-			console.log(data);
 			if (data.trim() == 0) {
 				Swal.fire({
 					icon: "error",
@@ -371,7 +366,6 @@ $(document).on("click", ".delete", function () {
 				url: base_url + "/userdelete/" + id,
 				type: "POST",
 				success: function (data) {
-					console.log(data);
 					if (data.trim() == "deleted") {
 						let page = $("#invis").val();
 						fetchData(page);

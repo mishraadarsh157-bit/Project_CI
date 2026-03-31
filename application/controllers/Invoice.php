@@ -69,9 +69,10 @@ class Invoice extends CI_controller
      $invoiceNo = $this->input->post('invoiceNo');
         $client    = $this->input->post('cli_id');
 
-        $items     = $this->input->post('itm_id');       // array
+        $items     = $this->input->post('itm_id');
+              // array
         $quantity  = $this->input->post('quantity');   // array
-
+        
         $data = [
             'InvoiceNo' => $invoiceNo,
             'ClientABN'     => $client,
@@ -91,6 +92,35 @@ class Invoice extends CI_controller
     }
     public function updateform($id){
     $data=$this->crud_model_four->updForm($id);
+    echo json_encode($data);
+
+    }
+
+    public function update($id){
+    
+        $items     = $this->input->post('itm_id')??"";
+        if(trim($items)==""){
+            echo "Please Enter Items";
+            return false;
+        }        // array
+        $quantity  = $this->input->post('quantity')??""; 
+        if(trim($quantity)==""){
+           echo "Please Enter Quantity";
+           return false;
+       }
+        $result = $this->crud_model_four->UpdateInvoice($id,$items,$quantity);
+
+        if($result)
+        {
+            echo 1;
+        }
+        else
+        {
+            echo 0;
+        }
+    }
+    public function generateMail($id){
+    $data=$this->crud_model_four->mailForm($id);
     echo json_encode($data);
 
     }

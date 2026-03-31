@@ -115,37 +115,7 @@ public function insertInvoice($invoiceData,$items,$quantity)
     }
 
 
-    public function getClient($table, $data)
-    {
-        $query = $this->db->get_where($table, array('client_id' => $data));
-        if ($query) {
-            return $query->row();
-        } else {
-            return false;
-        }
-    }
-    public function if_exist($table, $field, $value, $id)
-    {
-        $this->db->select($field);
-        $this->db->from($table);
-        if (trim($id) == '') {
-            $this->db->where($field, $value);
-        } else {
-            $this->db->where($field, $value);
-            $this->db->where('client_id !=', $id);
-        }
-        $this->db->limit(1);
-
-        $query = $this->db->get();
-        if ($query->num_rows() > 0) {
-
-            return true;
-        } else {
-            return false;
-        }
-    }
     
-
     public function updForm($id){
     $this->db->where('invoice.InvoiceNo',$id);
     $this->db->from('client');
@@ -154,12 +124,58 @@ public function insertInvoice($invoiceData,$items,$quantity)
     $this->db->join('items','ItemNo=item_id','left');
     $query=$this->db->get();
     if($query){
-        return $query->result();
+        return $query->result_array();
     }
     else{
         return 0;
     }
 
+    }
+////////////////////////////
+public function UpdateInvoice($id,$items,$quantity)
+    {
+
+        $this->db->trans_begin();
+                $this->db->where("InvoiceNo", $id);
+        $upd = $this->db->delete("invoiceitem");
+        if($upd){
+
+        for($i=0; $i<count($items); $i++)
+        {
+
+            $itemData = [
+                'InvoiceNo' => $id,
+                'ItemNo'    => $items[$i],
+                'Quantity'   => $quantity[$i]
+            ];
+
+            $this->db->insert('invoiceitem',$itemData);
+
+        }}
+
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            return false;
+        }
+        else
+        {
+            $this->db->trans_commit();
+            return true;
+        }
+
+    }
+    public function mailForm($id){
+    $this->db->where('InvoiceNo',$id);
+    $this->db->from('invoice');
+    $this->db->join('client','client_id=ClientAbn','left');
+    $query=$this->db->get();
+    if($query){
+        return $query->row();
+    }
+    else{
+        return 0;
+    }
     }
 
 }

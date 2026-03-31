@@ -7,9 +7,7 @@ function dashboardData() {
     url: base_url + "/dashfetch",
     type: "POST",
     success: function (data) {
-        console.log(data)
       data = JSON.parse(data);
-      console.log(data,"kkkk")
       data.forEach( (value,index,arr)=> {
         $("#total_users").text(arr[0]);
         $("#total_clients").text(arr[1]);

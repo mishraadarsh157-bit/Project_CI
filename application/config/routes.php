@@ -98,3 +98,10 @@ $route['invoiceItemdata'] = 'invoice/invoiceItemdata';
 $route['InvoiceNo'] = 'invoice/invNo';
 $route['invoiceInsert'] = 'invoice/insert';
 $route['invoiceUpdateForm/(:num)'] = 'invoice/updateform/$1';
+$route['invoiceUpdate/(:num)'] = 'invoice/update/$1';
+
+
+//// mailer
+$route['generateMail/(:num)'] = 'invoice/generateMail/$1';
+$route['mail'] = 'EmailController/mail';
+$route['pdf/(:num)'] = 'Pdf/makePdf/$1';

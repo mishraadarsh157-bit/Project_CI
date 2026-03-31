@@ -14,9 +14,7 @@ $(document).on('click','.login-btn',function(){
         type:"POST",
         data:fd,
         success:function(data){
-            console.log(data)
             if(data.trim()=='success'){
-                // console.log(base_url)
                 window.location.href=base_url+'/dashboard'
             }
         }

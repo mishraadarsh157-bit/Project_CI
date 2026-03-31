@@ -76,7 +76,7 @@
               
               <form id="myForm">
                 <div class="row w-100  mx-0 mt-4 pt-4 px-4 pb-5  ">
-                    <input type="text" name="id" disabled id="id">
+                    <input type="text" name="id" disabled hidden id="id">
                     <div class="col-6 mb-5 mt-4">
                         Item Name  <sup class="text-danger">*</sup>:
                         <input type="text" name='name' id="name" placeholder="Item name" class='item_name form-control '>
