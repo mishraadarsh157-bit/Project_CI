@@ -13,14 +13,34 @@
                 <i class="bi bi-bell"></i>
             </div>
 
-            <div class="dropdown ">
-                <img src="./assets/images/profile (2).png" class="" data-bs-toggle="dropdown" aria-expanded="false" height="40px">
-                <ul class="dropdown-menu px-2">
-                    <li class='mt-3'><a class="dropdown-item" href="#">Action</a></li>
-                    <li class='mt-3'><a class="dropdown-item" href="#">Another action</a></li>
-                    <li class='mt-3'><a class="dropdown-item bg-danger" href="#">Logout</a></li>
-                </ul>
+            <div class="drop">
+                <img src="./assets/images/profile (2).png" class="img"  height="40px">
+                <div class="zee">
+                    <button class="btn btn-danger">Logout <i class="bi bi-box-arrow-left"></i></button>
+                </div>
             </div>
         </div>
 
     </div>
+
+    <script>
+        $('.zee').hide()
+        $('.img').on('click',function(){
+            $('.zee').toggle()
+        })
+
+        $('.zee').on('click',function(){
+            $.ajax({
+            url:,
+            type:"POST",
+            success:function(data){
+                if(data==1){
+                    window.location.href=base_url + "login"
+                }
+                else{
+                    window.loaction.href=base_url;
+                }
+            }
+            })
+        })
+    </script>

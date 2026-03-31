@@ -40,6 +40,11 @@
         background: #f5f6f8;
         font-family: 'Segoe UI', sans-serif;
     }
+    .cards-holder{
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
 </style>
 
 <body class='bg-light'>
@@ -51,28 +56,31 @@
                 <h1>Welcome User</h1>
                 <p>You Have Logged In With <span class='user_logged text-white'></span></p>
             </div>
+        </div>
+        <div class="d-flex cards-holder">
+
             <div class="col-6 ">
-                <div class="row pt-5">
-                    <div class="col-5 ms-2 hover-cards me-5 border-top border-5 box-shadow border-danger p-3">
+                <div class="d-flex pt-5">
+                    <div class="User_card col-5 ms-2 hover-cards me-5 border-top border-5 box-shadow border-danger p-3">
                         <h1 class="text-danger">Total Users</h1><b id="total_users"></b>
                     </div>
-                    <div class="col-5 ms-3 hover-cards border-top border-5 box-shadow border-danger p-3"><h1 class="text-danger">Total Clients</h1><b id="total_clients"></b></div>
+                    <div class="client_card col-5 ms-3 hover-cards border-top border-5 box-shadow border-danger p-3"><h1 class="text-danger">Total Clients</h1><b id="total_clients"></b></div>
                 </div>
             </div>
             <div class="col-6 ">
-                <div class="row pt-5">
-                    <div class="col-5 ms-5 me-5 hover-cards border-top border-5 box-shadow border-danger p-3">
+                <div class="d-flex pt-5">
+                    <div class="item_card col-5 ms-5 me-5 hover-cards border-top border-5 box-shadow border-danger p-3">
                         <h1 class="text-danger">Total Users</h1><b id="total_items"></b>
                     </div>
-                    <div class="col-5 ms-3 hover-cards border-top border-5 box-shadow border-danger p-3"><h1 class="text-danger">Total Clients</h1><b id="total_invoice"></b></div>
+                    <div class="invoice_card col-5 ms-3 hover-cards border-top border-5 box-shadow border-danger p-3"><h1 class="text-danger">Total Clients</h1><b id="total_invoice"></b></div>
                 </div>
             </div>
         </div>
-    </div>
-</body>
-<script src="./assets/javascript/jquery.js"></script>
-<script>
-    const user_email = '<?php echo $_SESSION['email'] ?>';
+        </div>
+    </body>
+    <script src="./assets/javascript/jquery.js"></script>
+    <script>
+        const user_email = '<?php echo $_SESSION['email'] ?>';
 </script>
 <script>
     $('.user_logged').text(user_email)

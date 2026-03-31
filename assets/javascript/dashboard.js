@@ -21,3 +21,16 @@ function dashboardData() {
     },
   });
 }
+
+$(document).on("click",".User_card",function(){
+  window.location.href=base_url + "usermaster";
+})
+$(document).on("click",".client_card",function(){
+  window.location.href=base_url + "clientmaster";
+})
+$(document).on("click",".item_card",function(){
+  window.location.href=base_url + "itemmaster";
+})
+$(document).on("click",".invoice_card",function(){
+  window.location.href=base_url + "invoice";
+})
