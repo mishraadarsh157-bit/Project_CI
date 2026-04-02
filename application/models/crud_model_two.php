@@ -96,17 +96,17 @@ class crud_model_two extends CI_Model
         $query = $this->db->get();
         if ($query) {
             return $query->result();
-            } else {
-                echo 0;
-                }
-                }
-                public function cities($table, $state)
-                {
-                    $this->db->select('*');
-                    $this->db->where('state_id', $state);
-                    
-                    $this->db->from($table);
-                    $this->db->order_by('city', 'ASC');
+        } else {
+            echo 0;
+        }
+    }
+    public function cities($table, $state)
+    {
+        $this->db->select('*');
+        $this->db->where('state_id', $state);
+
+        $this->db->from($table);
+        $this->db->order_by('city', 'ASC');
         $query = $this->db->get();
         if ($query) {
             return $query->result();

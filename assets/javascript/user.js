@@ -168,7 +168,9 @@ function search() {
 function resetBTN() {
 	$(".search").val("");
 	var val = 1;
+
 	$("#invis").val(val);
+
 	var page = $("#invis").val();
 	fetchData(Number(page));
 }
@@ -226,7 +228,7 @@ $(document).on("click", "#submitForm", function () {
 				$(".allusr").trigger("click");
 				fetchData();
 				Swal.fire({
-					title: "Drag me!",
+					title: "Inserted!",
 					icon: "success",
 					draggable: true,
 				});
@@ -253,20 +255,15 @@ $(document).on("click", ".update_form", function () {
 				$("#name").val(value["name"]);
 				$("#email").val(value["email"]);
 				$("#phone").val(value["phone"]);
-				if (value["STATUS"] == 1) {
-					var status = "ACTIVE";
-				} else {
-					var status = "INACTIVE";
-				}
-				$(".pss")
+				let status = (value["STATUS"] == 1) ? "ACTIVE" : "INACTIVE";
+				let other = (value["STATUS"] == 0) ? "ACTIVE" : "INACTIVE";
+				let other_val = (value["STATUS"] == 0) ? 1 : 0;
+			$(".pss")
 					.html(`Status<select id='user_status' name='status' class='form-select ' value='${value["STATUS"]}'>
           
-          <option value='${value["STATUS"]}'>${status}</option>
-          
-          <option disabled>Select Status</option>
-          <option value='1'>ACTIVE</option>
-          <option value='0'>INACTIVE</option>
-          </select>`);
+         	<option value='${value["STATUS"]}'>${status}</option>
+						<option value='${other_val}'>${other}</option>
+					 </select>`);
 			});
 		},
 	});
@@ -318,11 +315,12 @@ $(document).on("click", "#UpdateForm", function () {
 				});
 			} else {
 				Swal.fire({
-					title: "Drag me!",
+					title: "Updated!",
 					icon: "success",
 					draggable: true,
 				});
-				fetchData();
+				let page = $("#invis").val();
+				fetchData(page);
 				$(".allusr").trigger("click");
 			}
 		},
@@ -331,7 +329,10 @@ $(document).on("click", "#UpdateForm", function () {
 
 $(".allusr").on("click", function () {
 	$(".submit_area").html(
-		'<button type="button" id="submitForm" class="btn btn-primary w-100">Submit</button>',
+		' <button type="button" id="submitForm" class="btn btn-outline-primary">\
+                       Submit\
+                      </button>\
+                      <button type="reset" class="reset btn btn-outline-danger">Reset</button>',
 	);
 	$("#myForm").trigger("reset");
 	$(".addusr").text("Add User");
@@ -362,6 +363,9 @@ $(document).on("click", ".delete", function () {
 		confirmButtonText: "Yes, delete it!",
 	}).then((result) => {
 		if (result.isConfirmed) {
+
+			
+
 			$.ajax({
 				url: base_url + "/userdelete/" + id,
 				type: "POST",
@@ -381,8 +385,6 @@ $(document).on("click", ".delete", function () {
 					}
 				},
 			});
-		} else {
-			fetchData();
 		}
 	});
 });

@@ -7,11 +7,11 @@ class crud_model extends CI_Model
         parent::__construct();
         $this->load->database(); // IMPORTANT
     }
-    public function getAll($table,$status,$search,$field,$order,$limit,$offset)
+    public function getAll($table, $status, $search, $field, $order, $limit, $offset)
     {
         $this->db->select('*');
         $this->db->from($table);
-		$user = $this->session->userdata('user_id');
+        $user = $this->session->userdata('user_id');
         $this->db->where('id !=', $user);
         $this->db->like('status', $status);
         $this->db->group_start();
@@ -20,7 +20,7 @@ class crud_model extends CI_Model
         $this->db->or_like('phone', $search);
         $this->db->group_end();
         $this->db->order_by($field, $order);
-        $this->db->limit($limit,$offset);
+        $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
         if ($query) {

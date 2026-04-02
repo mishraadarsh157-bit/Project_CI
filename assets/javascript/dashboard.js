@@ -2,6 +2,8 @@ $(document).ready(function(){
     dashboardData()
 })
 
+
+
 function dashboardData() {
   $.ajax({
     url: base_url + "/dashfetch",

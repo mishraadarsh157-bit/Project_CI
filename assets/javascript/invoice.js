@@ -167,12 +167,12 @@ function resetBTN() {
 function addMore() {
 	var row = "<tr class='border'>";
 	row +=
-		'<td class="pb-3 ps-2">Item Name <sup class="text-danger">*</sup><input type="text" name="itemName[]" id="item_s" class="item-name-invoice form-control" placeholder="Item Name"><div class="itemselect position-absolute "></div></td>\
-<td class="pb-3"><input type="text" hidden name="itm_id[]" class="itm_Id">  Item Price<input disabled type="text" name="price[]" class="item-price-invoice form-control bg-white" placeholder="Item Price"></td>\
+		'<td class="pb-3 ps-2">Item Name <sup class="text-danger">*</sup><input type="text" name="itemName[]" maxlength="20" onchange="changeAmt()" id="item_s" class="item-name-invoice form-control" placeholder="Item Name"><div class="itemselect"></div></td>\
+<td class="pb-3 text-end pe-3"><input type="text" hidden name="itm_id[]" class="itm_Id">  Item Price<input disabled type="text" name="price[]"  onkeyup="changeAmt()" class="item-price-invoice form-control bg-white text-end" placeholder="Item Price"></td>\
 <td class="pb-3">\
 Quantity<input min="1" type="number" onchange="changeAmt()" min="1" max="100" oninput="this.value = this.value < 1 ? 1 : this.value" class="item-quantity-invoice form-control" name="quantity[]" bg-white  border border-0" value="1">\
    </td>\
-    <td class="pb-3">Amount<input type="number" disabled placeholder="Amount" name="rowTotal[]" class="rowTotal bg-white form-control"></td>\
+    <td class="pb-3">Amount<input type="number" disabled placeholder="Amount" name="rowTotal[]" class="rowTotal text-end bg-white form-control"></td>\
     <td class="pb-3"><button type="button" onclick="changeAmt()" class="removeForm btn btn-outline-danger border border-0">X</button></td></tr>\
     ';
 	$(".itemTable").append(row);
@@ -249,6 +249,7 @@ $(document).on("keyup", ".client-name-invoice", function () {
 });
 
 $(document).on("keyup", ".item-name-invoice", function () {
+	$(".insertall").hide();
 	let value = $(this).val() ?? "";
 	if (value == "") {
 		value = "b";
@@ -261,33 +262,29 @@ $(document).on("keyup", ".item-name-invoice", function () {
 			itemSearch: value,
 		},
 		success: function (data) {
-			if (data.trim() == "empty") {
+			data = JSON.parse(data);
+			if (data == "") {
 				let table = "no item found";
+				row.find(".itemselect").show();
 				row.find(".itemselect").html(table).css("color", "red");
 			} else {
-				data = JSON.parse(data);
-
 				row.find(".itemselect").html("");
 				$(function () {
 					var availableitems = data;
 					row.find("#item_s").autocomplete({
 						source: availableitems,
+						
 						select: function (event, ui) {
-							let value = $(this).val();
-							let row = $(this).closest("tr");
-							$.ajax({
-								url: base_url + "/invoiceItemdata",
-								type: "POST",
-								data: {
-									item_name: value,
-								},
-								success: function (data) {
-									data = JSON.parse(data);
-
-									row.find(".item-price-invoice").val(data.price);
-									row.find(".itm_Id").val(data.item_id);
-								},
-							});
+							$(document).on("keyup",".item-name-invoice",function(){
+								let value=$(this).val()
+								let row = $(this).closest("tr");
+								fetchItem(value,row)
+							})
+							$(document).on("change",".item-name-invoice",function(){
+								let value=$(this).val()
+								let row = $(this).closest("tr");
+								fetchItem(value,row)
+							})
 						},
 					});
 				});
@@ -296,7 +293,31 @@ $(document).on("keyup", ".item-name-invoice", function () {
 	});
 });
 
+////////
+
+function fetchItem(value,row) {
+	
+	$.ajax({
+		url: base_url + "/invoiceItemdata",
+		type: "POST",
+		data: {
+			item_name: value,
+		},
+		success: function (data) {
+			data = JSON.parse(data);
+			if (data == null) {
+				return false;
+			} else {
+				row.find(".item-price-invoice").val(data.price);
+				row.find(".itm_Id").val(data.item_id);
+				changeAmt();
+			}
+		},
+	});
+}
+
 $(document).on("keyup", ".item-name-invoice", function () {
+	changeAmt();
 	let value = $(this).val() ?? "";
 	let row = $(this).closest("tr");
 	if (value.trim() == "") {
@@ -401,6 +422,7 @@ function addInvoic() {
 		})
 		.get();
 	if (item.some((element) => element == "")) {
+		$(".insertall").show();
 		$(".insertall").text("insert proper items");
 		return false;
 	}
@@ -478,25 +500,26 @@ $(document).on("click", ".update_form", function () {
 					.prop("disabled", true);
 				$(".client-email-invoice").val(value["client_email"]);
 				$(".client-phone-invoice").val(value["phone"]);
-				input += "<tr class='w-100'>";
-				input += `<td class=''><input type="text" class="item-name-invoice form-control"  onchange="fetchItemData(this)" onkeyup="changeAmt()" name='itemName[]'  value="${value["item_name"]}"><div class="itemselect position-absolute"></div>
+				input += "<tr class='w-100 border py-3'>";
+				input += `<td class='pb-3 ps-2'>Item Name  <sup class="text-danger">*</sup>:<input type="text" id="item_s" class="item-name-invoice form-control" maxlength="20" onchange="fetchItemData(this)" onkeyup="changeAmt()" name='itemName[]'  value="${value["item_name"]}"><div class="itemselect position-absolute"></div>
 					<input type="text" hidden name='itm_id[]' class='itm_Id' value="${value["item_id"]}">  </td>`;
-				input += `<td><input type="text" disabled class="item-price-invoice bg-white form-control"  name="price[]"  value="${value["price"]}"></td>`;
-				input += `<td><input min='1' type="number" class="item-quantity-invoice form-control"  onchange="changeAmt()" name='quantity[]'  value="${value["Quantity"]}"></td>`;
+				input += `<td class='pb-3'>Price<input type="text" disabled class="item-price-invoice bg-white form-control"  name="price[]"  value="${value["price"]}"></td>`;
+				input += `<td class='pb-3'>Quantity<input min='1' type="number" class="item-quantity-invoice form-control"  onchange="changeAmt()" name='quantity[]'  value="${value["Quantity"]}"></td>`;
 				let amount = Number(value["Quantity"]) * Number(value["price"]);
-				input += `<td><input type="text" disabled class="rowTotal bg-white form-control"  name="rowTotal[]" value="${amount}"></td>`;
+				input += `<td class='pb-3'>Amount<input type="text" disabled  class="rowTotal text-end bg-white form-control"  name="rowTotal[]" value="${amount}"></td>`;
 				input +=
-					'<td><button type="button" class="removeForm btn btn-outline-danger border border-0">X</button></td>';
+					'<td class="pb-3"><button type="button" class="removeForm btn btn-outline-danger border border-0">X</button></td>';
 				input += "</tr>";
 			});
 			input += "</table>";
-			$(".loadmoreForm").html(input);
+			$(".itemTable").append(input);
 			$(".loadButtons").html(
-				' <div class="loadButtons col-5 mt-4" align="right">Total Amount<input type="text" disabled class="total-amount-invoice form-control bg-white mb-4" placeholder="Total Amount">\
+				' <div class="loadButtons col-5 mt-4" align="right">Total Amount<input type="text" disabled class="total-amount-invoice text-end form-control bg-white mb-4" placeholder="Total Amount">\
             <button class="btn btn-outline-primary mb-4" id="UpdateForm" type="button">Update Invoice</button>\
 			</div>',
 			);
 			changeAmt();
+			cutBtn();
 		},
 	});
 });
@@ -573,10 +596,19 @@ $(document).on("click", "#UpdateForm", function () {
 		success: function (data) {
 			if (data.trim() == 1) {
 				$(".allusr").trigger("click");
+				let page = $("#invis").val();
+				fetchData(page);
 				Swal.fire({
 					title: "Updated!",
 					icon: "success",
 					draggable: true,
+				});
+			} else {
+				Swal.fire({
+					icon: "error",
+					title: "Oops...",
+					text: "Data not Updated!",
+					footer: "<b>Why do I have this issue?</b>",
 				});
 			}
 		},
@@ -585,6 +617,7 @@ $(document).on("click", "#UpdateForm", function () {
 
 $("#all").on("click", function () {
 	$(".loadmoreForm").html("");
+	$(".insertall").hide();
 	$("#add").text("Add Invoice");
 	$("#myForm").trigger("reset");
 	$(".add_inv").text("Add Invoice");
@@ -640,8 +673,27 @@ SAN SOFTWARE's Team`);
 		},
 	});
 });
+$("#spinner").hide();
 
 $(document).on("click", "#sendMail", function () {
+	let inv = $("#Invn").val() ?? "";
+	if (inv.trim() == "") {
+		Swal.fire({
+			title: "Invoice No?",
+			text: "Some MissHappening Created with Invoice Number?",
+			icon: "question",
+		});
+		return false;
+	}
+	let subject = $("#subject").val() ?? "";
+	if (subject.trim() == "") {
+		$(".subvalid").text("enter Subject");
+		return false;
+	}
+	let des = $("#des").val() ?? "";
+	if (!validDescription(des)) {
+		return;
+	}
 	let fd = new FormData(mailForm);
 	$.ajax({
 		url: base_url + "/mail",
@@ -649,18 +701,24 @@ $(document).on("click", "#sendMail", function () {
 		data: fd,
 		processData: false,
 		contentType: false,
-		success:function(data){
-			data=JSON.parse(data);
-			if(data.success==true){
-				$('.btn-close').trigger('click');
+		beforeSend: function () {
+			$("#spinner").show();
+			$(".des_valid").hide();
+			$(".subvalid").hide();
+		},
+		success: function (data) {
+			data = JSON.parse(data);
+			if (data.success == true) {
+				$(".btn-close").trigger("click");
 				Swal.fire({
 					position: "top-end",
 					icon: "success",
 					title: "Mail Sent",
 					showConfirmButton: false,
-					timer: 1500
+					timer: 1500,
 				});
+				$("#spinner").hide();
 			}
-		}
+		},
 	});
 });

@@ -16,31 +16,9 @@
             <div class="drop">
                 <img src="./assets/images/profile (2).png" class="img"  height="40px">
                 <div class="zee">
-                    <button class="btn btn-danger">Logout <i class="bi bi-box-arrow-left"></i></button>
+                    <button type="button" class="btn btn-danger">Logout <i class="bi bi-box-arrow-left"></i></button>
                 </div>
             </div>
         </div>
 
     </div>
-
-    <script>
-        $('.zee').hide()
-        $('.img').on('click',function(){
-            $('.zee').toggle()
-        })
-
-        $('.zee').on('click',function(){
-            $.ajax({
-            url:,
-            type:"POST",
-            success:function(data){
-                if(data==1){
-                    window.location.href=base_url + "login"
-                }
-                else{
-                    window.loaction.href=base_url;
-                }
-            }
-            })
-        })
-    </script>

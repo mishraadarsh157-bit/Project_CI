@@ -10,8 +10,9 @@ class Login extends CI_controller
 		$user=$this->session->userdata('user_id');
 		if($user){
 			redirect(base_url('/dashboard'));
-		}
-	}
+			}
+			
+			}
 
 	public function index()
 	{
@@ -31,4 +32,5 @@ class Login extends CI_controller
 			echo "invalid";
 		}
 	}
+	
 }

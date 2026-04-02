@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="./assets/css/style.css">
+ <?php $this->load->view('include/cssLinks') ?>
+
 </head>
 <style>
     body {
@@ -26,12 +27,15 @@
                 <div class="form-group">
                     <label for='email'>Email</label>
                     <input type="email" id='email' name="email" placeholder="Enter your email" required>
+                    <div class="email_valid text-danger"></div>
                 </div>
 
                 <div class="form-group">
                     <label for='password'>Password</label>
                     <input type="password" id='password' name="password" placeholder="Enter your password" required>
+                    <div class="pass_valid text-danger"></div>
                 </div>
+                <div class="invalid_details text-danger"></div>
 
                 <button type="button" class="login-btn">Login</button>
             </form>
@@ -43,8 +47,9 @@
 </body>
 <script>
     const base_url='<?php echo base_url(); ?>';
-   
+    
 </script>
+<script src="./assets/javascript/sweetAlert.js"></script>
 <script src="./assets/javascript/jquery.js"></script>
 <script src="./assets/javascript/login.js"></script>
 

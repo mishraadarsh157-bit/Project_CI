@@ -35,8 +35,8 @@
             <div class="search_holder">
               <input type="text" class="search" name='search' onchange="search()">
               <button type="button" class='search_icon' onclick="search()"><i class="bi bi-search"></i></button>
-              <button type="reset" ></button>
             </div>
+            <button type="reset" onclick="resetBTN()" class="btn"><i class="bi bi-arrow-repeat"></i></button>
             <input type="number" id="invis" value="1" hidden>
             <input type="text" class="field" value="InvoiceNo" hidden>
             <input type="text" class="order" value="desc" hidden>
@@ -94,7 +94,7 @@
           <!-- invoice date  -->
           <!-- client part -->
 
-          <div class="col-4 mt-4">Client Name <sup class="text-danger">*</sup><input type="text" id='automplete-1' onchange="fetchClientData()" class="client-name-invoice form-control bg-white " placeholder="Client Name">
+          <div class="col-4 mt-4" style="position: relative;">Client Name   <sup class="text-danger">*</sup>:<sup class="text-danger">*</sup><input type="text" maxlength="25" id='automplete-1' onchange="fetchClientData()" class="client-name-invoice form-control bg-white " placeholder="Client Name">
           <div class="clientselect"></div>
             <div class="invalidclint text-danger"></div>
           </div>
@@ -111,7 +111,7 @@
           <div class="insertall text-danger mb-3 col-6"></div>
           <div class="quantityall text-danger mb-3 col-6"></div>
           <div class="col-7"></div>
-          <div class="loadButtons col-5 mt-4" align="right">Total Amount<input type="text" disabled class="total-amount-invoice form-control bg-white mb-4" placeholder="Total Amount">
+          <div class="loadButtons col-5 mt-4" align="right">Total Amount<input type="text" disabled class="total-amount-invoice form-control bg-white mb-4 text-end"  placeholder="Total Amount">
             <button onclick="addInvoic()" class="btn btn-outline-primary mb-4" type="button">Save Invoice</button><button type="reset" onclick="loadInvoice()" class="btn btn-outline-danger ms-3 mb-4">Clear Form</button>
           </div>
 
@@ -150,44 +150,47 @@
 
           <!-- Invoice No -->
           <div class="mb-3">
-            <label class="form-label">Invoice No</label>
-            <input type="text" name="invoiceNo" id="Invn" class="form-control" required>
+            <input type="text" name="invoiceNo" id="Invn" hidden class="form-control" required>
           </div>
 
           <!-- Name -->
           <div class="mb-3">
             <label class="form-label">Client Name</label>
-            <input type="text" name="client_name"  id="client_no" class="form-control"
+            <input type="text" name="client_name" readonly  id="client_no" class="form-control bg-white"
                    required minlength="3" pattern="[A-Za-z ]+">
           </div>
 
           <!-- Client Gmail -->
           <div class="mb-3">
             <label class="form-label">Client Email</label>
-            <input type="email" name="clientemail" id="client_email" class="form-control" required>
+            <input type="email" name="clientemail" id="client_email" readonly class="form-control bg-white" required>
           </div>
 
           <!-- Subject -->
           <div class="mb-3">
-            <label class="form-label">Subject</label>
+            <label class="form-label">Subject  <sup class="text-danger">*</sup>:</label>
             <input type="text" name="subject" id="subject" class="form-control" required>
+          <div class="subvalid text-danger"></div>
           </div>
 
           <!-- Description -->
           <div class="mb-3">
-            <label class="form-label">Description</label>
+            <label class="form-label">Description  <sup class="text-danger">*</sup>:</label>
             <textarea name="description" id="des"  class="form-control" rows="3" required></textarea>
+          <div class="des_valid text-danger"></div>
           </div>
 
         </div>
         
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="close button"  class="btn btn-secondary" data-bs-dismiss="modal">
+          <button  type="button"  class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
           <button type="button" id="sendMail" class="btn btn-primary">
-            Send Mail
+            Send Mail <div class="spinner-border spinner-border-sm " id="spinner" role="status">
+  <!-- <span class="visually-hidden">Loading...</span> -->
+</div>
           </button>
         </div>
       </form>

@@ -23,7 +23,7 @@ class Pdf extends CI_Controller
 
         $data = $this->crud_model_four->updForm($id);
         $this->fpdf->AddPage();
-      
+
         $this->fpdf->SetFont('Arial', 'B', 16);
         $this->fpdf->Image('./assets/images/sansoftwares-1-5.png', 60, 10, -300);
         $this->fpdf->Image('./assets/images/sansoftwares-watermark.png', 10, 50, 50);
@@ -55,22 +55,22 @@ class Pdf extends CI_Controller
         $this->fpdf->Cell(40, 10, 'Price', 1);
         $this->fpdf->Cell(40, 10, 'Amount', 1);
         $this->fpdf->Ln();
-        $total=0;
+        $total = 0;
         foreach ($data as $row) {
 
             $this->fpdf->Cell(60, 10, $row['item_name'], 1);
             $this->fpdf->Cell(40, 10, $row['Quantity'], 1);
-            $this->fpdf->Cell(40, 10, $row['price'], 1);
+            $this->fpdf->Cell(40, 10,"Rs. " . $row['price'], 1);
             $this->fpdf->Cell(40, 10, $row['price'] * $row['Quantity'], 1);
             $this->fpdf->Ln();
-            $qty=$row['Quantity'];
-            $price=$row['price'];
-            $total +=$qty*$price;
+            $qty = $row['Quantity'];
+            $price = $row['price'];
+            $total += $qty * $price;
         }
-         $this->fpdf->Cell(40, 10, '', 0);
-                    $this->fpdf->Cell(60, 10, '',0);
-                    $this->fpdf->Cell(40, 10, 'Balance Due :', 0);
-                    $this->fpdf->Cell(40, 10, $total, 0);
+        $this->fpdf->Cell(40, 10, '', 0);
+        $this->fpdf->Cell(60, 10, '', 0);
+        $this->fpdf->Cell(40, 10, 'Balance Due :', 0);
+        $this->fpdf->Cell(40, 10,"Rs. " . $total, 0);
         $this->fpdf->Output();
     }
 }

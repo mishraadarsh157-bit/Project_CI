@@ -182,9 +182,9 @@ async function loadstates() {
 		success: function (data) {
 			data = JSON.parse(data);
 
-			let states =
+		 let states =
 				"<select id='state' name='state' class='selected_state form-select'>";
-				states += `<option value=''>----Select States----</option>`;
+			states += `<option value=''>----Select State----</option>`;
 			data.forEach(function (value) {
 				states += `<option value='${value["id"]}'>${value["name"]}</option>`;
 			});
@@ -196,7 +196,16 @@ async function loadstates() {
 
 $(document).on("change", ".selected_state", function () {
 	let state = $(this).val();
-	loadcity(state);
+	
+	if (state.trim() == "") {
+		$(".cities_area").html(`  <select name="" id="" class="form-select">
+			<option value="">----select City----</option>
+			</select>`);
+		return false;
+	} else {
+
+		loadcity(state);
+	}
 });
 
 function loadcity(state) {
@@ -252,7 +261,7 @@ $(document).on("click", "#submitForm", function () {
 	}
 
 	let pincode = $("#pincode").val() ?? "";
-	if (!validAddress(pincode)) {
+	if (!validPincode(pincode)) {
 		return;
 	}
 
@@ -265,11 +274,11 @@ $(document).on("click", "#submitForm", function () {
 		contentType: false,
 
 		success: function (data) {
-			 let msg = data.toString().trim();
+			let msg = data.toString().trim();
 
-    msg = msg.replace(/<[^>]*>/g, '').trim();
+			msg = msg.replace(/<[^>]*>/g, "").trim();
 
-    msg = msg.replace(/^"|"$/g, '');
+			msg = msg.replace(/^"|"$/g, "");
 			if (data.trim() == 0) {
 				Swal.fire({
 					icon: "error",
@@ -277,7 +286,7 @@ $(document).on("click", "#submitForm", function () {
 					text: "Data not Inserted!",
 					footer: "<b>Why do I have this issue?</b>",
 				});
-			} else if (msg.toLowerCase().startsWith('valid')) {
+			} else if (msg.toLowerCase().startsWith("valid")) {
 				Swal.fire({
 					title: "Enter valid details!",
 					text: "Try again",
@@ -288,7 +297,7 @@ $(document).on("click", "#submitForm", function () {
 				$(".allcli").trigger("click");
 				fetchData();
 				Swal.fire({
-					title: "Drag me!",
+					title: "Inserted!",
 					icon: "success",
 					draggable: true,
 				});
@@ -299,7 +308,7 @@ $(document).on("click", "#submitForm", function () {
 
 $(document).on("click", ".update_form", async function () {
 	// debugger;
-	await $(".addcli").trigger("click");
+	 await $(".addcli").trigger("click");
 	$(".addcli").text("Update Client");
 	$(".submit_area").html(
 		'<button type="button" id="UpdateForm" class="btn btn-primary w-100">\Update\</button>',
@@ -318,46 +327,41 @@ $(document).on("click", ".update_form", async function () {
 				$("#phone").val(value["phone"]);
 				$("#state").val(Number(value["state_id"]));
 				let state = $("#state").val();
-				loadCity(state);
 				$("#address").val(value["address"]);
 				$("#pincode").val(value["pincode"]);
-
-				async function loadCity(state) {
-					await $.ajax({
-						url: base_url + "/fetchcities/" + state,
-						type: "POST",
+				
+				
+				await $.ajax({
+					url: base_url + "/fetchcities/" + state,
+					type: "POST",
 						data: {
-							city: "city",
-							state: state,
+							// state: state,
 						},
 						success: function (data) {
 							data = JSON.parse(data);
 							var row =
-								"<select name='city' class='form-select' id='city' value''><option value=''>----Select City----</option>";
+							"<select name='city' class='form-select' id='city' value''><option value=''>----Select City----</option>";
 							data.forEach(function (value) {
 								row += `<option  value='${value["id"]}'>${value["city"]}</option>`;
 							});
 							row += "</select>";
 							$(".cities_area").html(row);
-
+							
 							$("#city").val(value["city_id"]);
 						},
 					});
-				}
-
-				if (value["client_status"] == 1) {
-					var status = "ACTIVE";
-				} else {
-					var status = "INACTIVE";
-				}
+					
+					// loadCity(state);
+					$("#state").val(Number(value["state_id"]));
+				let status = (value["client_status"] == 1) ? "ACTIVE" : "INACTIVE";
+				let other = (value["client_status"] == 0) ? "ACTIVE" : "INACTIVE";
+				let other_val = (value["client_status"] == 0) ? 1 : 0;
 				$(".status_area")
 					.html(` <label class="form-label">Status</label><select id='client_status' name='status' class='form-select ' value='${value["client_status"]}'>
 						
 						<option value='${value["client_status"]}'>${status}</option>
+						<option value='${other_val}'>${other}</option>
 						
-						<option disabled>Select Status</option>
-						<option value='1'>ACTIVE</option>
-						<option value='0'>INACTIVE</option>
 						</select>`);
 			});
 		},
@@ -387,6 +391,24 @@ $(document).on("click", "#UpdateForm", function () {
 	if (!validNumber(phone)) {
 		return;
 	}
+	let address = $("#address").val() ?? "";
+	if (!validAddress(address)) {
+		return;
+	}
+	let state = $("#state").val() ?? "";
+	if (!validState(state)) {
+		return;
+	}
+	let city = $("#city").val() ?? "";
+	if (!validState(city)) {
+		return;
+	}
+
+	let pincode = $("#pincode").val() ?? "";
+	if (!validPincode(pincode)) {
+		return;
+	}
+
 	let form = new FormData(myForm);
 	$.ajax({
 		url: base_url + "/clientupdate/" + id,
@@ -400,7 +422,7 @@ $(document).on("click", "#UpdateForm", function () {
 				Swal.fire({
 					icon: "error",
 					title: "Oops...",
-					text: "Data not Inserted!",
+					text: "Data not Updated!",
 					footer: "<b>Why do I have this issue?</b>",
 				});
 			} else if (data.trim() == "email_exists") {
@@ -411,20 +433,31 @@ $(document).on("click", "#UpdateForm", function () {
 				});
 			} else {
 				Swal.fire({
-					title: "Drag me!",
+					title: "Updated!",
 					icon: "success",
 					draggable: true,
 				});
-				fetchData();
+				let page = $("#invis").val();
+				fetchData(page);
 				$(".allcli").trigger("click");
 			}
 		},
 	});
 });
 
+$(".reset").on("click", function () {
+	$(".cities_area").html(`  <select name="" id="" class="form-select">
+      <option value="">----select City----</option>
+    </select>`);
+});
+
 $(".allcli").on("click", function () {
 	$(".submit_area").html(
-		'<button type="button" id="submitForm" class="btn btn-primary w-100">Submit</button>',
+		'  <button type="button" id="submitForm" class="btn btn-outline-primary">\
+                       Submit\
+                      </button>\
+                      <button type="reset" class="reset btn btn-outline-danger">Reset</button>\
+                  ',
 	);
 	$("#myForm").trigger("reset");
 	$(".addcli").text("Add Client");
@@ -438,10 +471,16 @@ $(".allcli").on("click", function () {
                 <div class="pass_valid text-danger"></div>',
 	);
 	$(".name_valid").hide();
-	$(".eamil_valid").hide();
-	$(".pass_valid").hide();
+	$(".email_valid").hide();
 	$(".number_valid").hide();
 	$(".status_area").html("");
+	$(".state_valid").html("");
+	$(".city_valid").html("");
+	$(".pincode_valid").html("");
+	$(".address_valid").html("");
+	$('.cities_area').html(' <select name="" id="" class="form-select">\
+      <option value="">----select City----</option>\
+    </select>')
 });
 
 $(document).on("click", ".delete", function () {
@@ -480,14 +519,10 @@ $(document).on("click", ".delete", function () {
 						let page = $("#invis").val();
 						fetchData(page);
 					} else {
-						let page = $("#invis").val();
-						fetchData(page);
 					}
 				},
 			});
 		} else {
-			let page = $("#invis").val();
-			fetchData(page);
 		}
 	});
 });

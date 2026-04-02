@@ -49,7 +49,7 @@ function fetchData(page) {
 				let table = "";
 				let total_records = data.pages.length;
 				let total_pages = Math.ceil(total_records / limit);
-			
+
 				data.data.forEach(function (value, index) {
 					ind = index + 1;
 					index = (page - 1) * limit + ind;
@@ -65,9 +65,9 @@ function fetchData(page) {
 				</button>         
 				
                 </td>`;
-					table += `<td class='text-primary'><img src='${base_url}${value["item_image"]}' height='30px' width='30px' class='rounded-pill me-3'><i class='update_form' data-uid='${value["item_id"]}'>${value["item_name"]}</i></td>`;
+					table += `<td class='text-primary'><img src='${base_url}${value["item_image"]}' height='30px' width='30px' class='itm_im me-3'><i class='update_form' data-uid='${value["item_id"]}'>${value["item_name"]}</i></td>`;
 					table += `<td>${value["description"]}</td>`;
-					table += `<td>${value["price"]}</td>`;
+					table += `<td class='text-end'>₹${value["price"]}</td>`;
 
 					table += "</tr>";
 
@@ -200,11 +200,14 @@ $(document).on("click", "#submitForm", function () {
 
 		success: function (data) {
 			if (data.trim() == "inserted") {
+				$('.allusr').trigger('click')
+				fetchData()
 				Swal.fire({
 					title: "Inserted!",
 					icon: "success",
 					draggable: true,
 				});
+				
 			} else {
 				Swal.fire({
 					title: data,
@@ -232,6 +235,8 @@ function itmImg(event) {
 function resetImage() {
 	$("#item_image").val("");
 	$(".itemImage").attr("src", "");
+	$('.image_holder').html(`<input type="file"  name='image' accept="image/png, image/jpeg, image/jpg" onchange="itmImg(event)" id="image" class='form-control w-75'><button class="btn border border-0 btn-outline-danger" type="button" onclick="resetImage()"><i class="bi bi-x-lg"></i></button>
+                      `)
 }
 
 $(document).on("click", ".update_form", function () {
@@ -301,7 +306,8 @@ $(document).on("click", "#UpdateForm", function () {
 						icon: "success",
 						draggable: true,
 					});
-					fetchData();
+					let page = $("#invis").val();
+					fetchData(page);
 					$(".allusr").trigger("click");
 				}
 			} else {
@@ -334,6 +340,7 @@ $(".allusr").on("click", function () {
 	$(".eamil_valid").hide();
 	$(".pass_valid").hide();
 	$(".number_valid").hide();
+	$('.itemImage').attr('src',"")
 });
 
 $(document).on("click", ".delete", function () {
@@ -372,8 +379,6 @@ $(document).on("click", ".delete", function () {
 				},
 			});
 		} else {
-			let page = $("#invis").val();
-			fetchData(page);
 		}
 	});
 });

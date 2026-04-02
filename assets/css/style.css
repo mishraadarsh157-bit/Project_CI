@@ -13,12 +13,14 @@
 }
 /* LEFT SIDE (IMAGE) */
 .left-side {
+	
 	width: 50%;
 	background: url("../images/login.jpg") no-repeat center center/cover;
 }
 
 /* RIGHT SIDE (FORM) */
 .right-side {
+	
 	width: 50%;
 	display: flex;
 	justify-content: center;
@@ -175,12 +177,12 @@ background-color: white;
     border-radius: 50%;
 }
 .side-button:hover{
-	width: 200px;
+	width: 130px;
 	color: #000;
     background-color: white;
 	white-space: nowrap;
 	overflow: hidden;
-	transition: all ease-in-out .5s;
+	transition: all ease-in-out .2s;
 }
 .content-area{
 	margin-top: 70px;
@@ -300,4 +302,12 @@ background-color: white;
 	margin-left: -100px;
 	position: fixed;
 	z-index: 5000;
+}
+.itm_im{
+	border-radius: 50%;
+	transition: .3s all ease-in-out;
+}
+.itm_im:hover{
+border-radius: 0px;
+scale: 2;
 }

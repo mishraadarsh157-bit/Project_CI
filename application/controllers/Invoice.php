@@ -44,14 +44,15 @@ class Invoice extends CI_controller
         echo json_encode($data);
     }
 
- public function invoiceItem()
-    {   
-    $item=$_POST['itemSearch']??"";
-    $data=$this->crud_model_four->itemName($item);
-    $name=array_column($data,'item_name');
+    public function invoiceItem()
+    {
+        $item = $_POST['itemSearch'] ?? "";
+        $data = $this->crud_model_four->itemName($item);
+        $name = array_column($data, 'item_name');
         echo json_encode($name);
     }
-    public function invoiceItemdata(){
+    public function invoiceItemdata()
+    {
         $name = $this->input->post('item_name');
 
         $data = $this->crud_model_four->itemData($name);
@@ -59,73 +60,62 @@ class Invoice extends CI_controller
         echo json_encode($data);
     }
 
-    public function invNo(){
-        $data=$this->crud_model_four->generateNo();
+    public function invNo()
+    {
+        $data = $this->crud_model_four->generateNo();
         echo json_encode($data);
     }
 
-    public function insert(){
+    public function insert()
+    {
 
-     $invoiceNo = $this->input->post('invoiceNo');
+        $invoiceNo = $this->input->post('invoiceNo');
         $client    = $this->input->post('cli_id');
 
         $items     = $this->input->post('itm_id');
-              // array
+        // array
         $quantity  = $this->input->post('quantity');   // array
-        
+
         $data = [
             'InvoiceNo' => $invoiceNo,
             'ClientABN'     => $client,
             'InvDate' => date('Y-m-d H:i:s')
         ];
 
-        $result = $this->crud_model_four->insertInvoice($data,$items,$quantity);
+        $result = $this->crud_model_four->insertInvoice($data, $items, $quantity);
 
-        if($result)
-        {
+        if ($result) {
             echo 1;
-        }
-        else
-        {
+        } else {
             echo 0;
         }
     }
-    public function updateform($id){
-    $data=$this->crud_model_four->updForm($id);
-    echo json_encode($data);
-
+    public function updateform($id)
+    {
+        $data = $this->crud_model_four->updForm($id);
+        echo json_encode($data);
     }
 
-    public function update($id){
-    
-        $items     = $this->input->post('itm_id')??"";
-        if(trim($items)==""){
-            echo "Please Enter Items";
-            return false;
-        }        // array
-        $quantity  = $this->input->post('quantity')??""; 
-        if(trim($quantity)==""){
-           echo "Please Enter Quantity";
-           return false;
-       }
-        $result = $this->crud_model_four->UpdateInvoice($id,$items,$quantity);
+    public function update($id)
+    {
 
-        if($result)
-        {
+        $items     = $this->input->post('itm_id');
+             // array
+        $quantity  = $this->input->post('quantity');
+        
+        $result = $this->crud_model_four->UpdateInvoice($id, $items, $quantity);
+
+        if ($result) {
             echo 1;
-        }
-        else
-        {
+        } else {
             echo 0;
         }
     }
-    public function generateMail($id){
-    $data=$this->crud_model_four->mailForm($id);
-    echo json_encode($data);
-
+    public function generateMail($id)
+    {
+        $data = $this->crud_model_four->mailForm($id);
+        echo json_encode($data);
     }
-
-   
 }
     
     // $autoload['helper'] = array('url' , 'form' , 'cookie');

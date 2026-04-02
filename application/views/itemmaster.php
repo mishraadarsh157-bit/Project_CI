@@ -36,9 +36,9 @@
             <div class="search_holder">
               <input type="text" class="search" name='search' onchange="search()">
               <button type="button" class='search_icon' onclick="search()"><i class="bi bi-search"></i></button>
-              <button type="reset" ></button>
+              
             </div>
-          
+          <button type="reset" onclick="resetBTN()" class="btn"><i class="bi bi-arrow-repeat"></i></button>
             <input type="number" id="invis" value="1" hidden>
             <input type="text" class="field" value="item_id" hidden>
             <input type="text" class="order" value="desc" hidden>
@@ -59,8 +59,8 @@
                   <th class="sortable" data-column='item_id'>Sr.No ⬍</th>
                   <th class='text-center'>Action</th>
                   <th class="sortable" data-column='item_name'>Item ⬍</th>
-                  <th class="sortable" >Description </th>
-                  <th class="sortable" data-column='price'>Price ⬍</th>
+                  <th>Description </th>
+                  <th class="sortable text-end" data-column='price'>Price ⬍</th>
                 </tr>
               </thead>
               <tbody class="load_data">
@@ -79,17 +79,17 @@
                     <input type="text" name="id" disabled hidden id="id">
                     <div class="col-6 mb-5 mt-4">
                         Item Name  <sup class="text-danger">*</sup>:
-                        <input type="text" name='name' id="name" placeholder="Item name" class='item_name form-control '>
+                        <input type="text" name='name' id="name" placeholder="Item name" class='item_name form-control ' maxlength="15">
                         <div class="name_valid"></div>
                     </div>
-                    <div class="col-6 mb-5 mt-4">
+                    <div class="col-6 mb-5 mt-4 text-end">
                         Item Price <sup class="text-danger">*</sup>
-                        <input type="tel"  min='1' name='price' id="price" placeholder="Item Price" class='form-control ' oninput="this.value = this.value < 1 ? 1 : this.value" value="1">
+                        <input type="tel"  min='1' name='price' id="price" placeholder="Item Price" maxlength="5" class='form-control text-end' oninput="this.value = this.value.replace(/[^0-9]/g,''); if(this.value < 1) this.value = 1;">
                         <div class="price_valid"></div>
                     </div>
                     <div class="col-12 mb-5 p-2">
                         Item Description <sup class="text-danger">*</sup>
-                        <input type="text" name='description' id="description" placeholder="Item Description" class='form-control '>
+                        <input type="text" name='description' id="description" maxlength="30" placeholder="Item Description" class='form-control '>
                         <div class="des_valid"></div>
                     </div>
                     <div class="col-6 mb-5 p-2">
@@ -106,7 +106,6 @@
                     <div class="col-3 text-end ps-5 itemSaver">
                         <div class="valid_item text-danger mb-3"></div>
                         <button type="button" id="submitForm" name='' class="btn btn-outline-primary">SUBMIT</button>
-                        <!-- <input type="reset" class='btn btn-outline-danger' onclick="resetImage()" value='Reset'> -->
                     </div>
                 </div>
             </form>

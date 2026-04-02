@@ -16,15 +16,23 @@ class Dashboard extends CI_controller
     {
         $this->load->view('dashboard');
     }
-    public function fetch() {
-        $data[] = $this->dashboard_model->loadData('users','','');
-        $data[] = $this->dashboard_model->loadData('client','','');
-        $data[] = $this->dashboard_model->loadData('items','','');
-        $data[] = $this->dashboard_model->loadData('invoice','','');
-        $data[] = $this->dashboard_model->loadData('users','STATUS',1);
-        $data[] = $this->dashboard_model->loadData('users','STATUS !=',1);
-        $data[] = $this->dashboard_model->loadData('client','client_status ',1);
-        $data[] = $this->dashboard_model->loadData('client','client_status !=',1);
+
+    public function fetch()
+    {
+        $data[] = $this->dashboard_model->loadData('users', '', '');
+        $data[] = $this->dashboard_model->loadData('client', '', '');
+        $data[] = $this->dashboard_model->loadData('items', '', '');
+        $data[] = $this->dashboard_model->loadData('invoice', '', '');
+        $data[] = $this->dashboard_model->loadData('users', 'STATUS', 1);
+        $data[] = $this->dashboard_model->loadData('users', 'STATUS !=', 1);
+        $data[] = $this->dashboard_model->loadData('client', 'client_status ', 1);
+        $data[] = $this->dashboard_model->loadData('client', 'client_status !=', 1);
         echo json_encode($data);
+    }
+    public function logout()
+    {
+        $this->session->unset_userdata('user_id');
+        $this->session->unset_userdata('email');
+        echo 1;
     }
 }

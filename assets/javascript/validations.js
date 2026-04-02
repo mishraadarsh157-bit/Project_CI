@@ -20,6 +20,27 @@ function validName(name) {            ////////////////////////////////name
     return true;
     }
 }
+
+ $('.zee').hide()
+        $('.img').on('click',function(){
+            $('.zee').toggle()
+        })
+
+        $('.zee').on('click',function(){
+            $.ajax({
+            url:base_url + "/logout",
+            type:"POST",
+            success:function(data){
+                if(data==1){
+                    window.location.href=base_url + "login"
+                }
+                else{
+                    window.location.href=base_url;
+                }
+            }
+            })
+        })
+
 function validPass(password) {
     const value = password.trim();
     const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+.])[a-zA-Z0-9!@#$%^&*()\-.+]{8,20}$/;
@@ -87,7 +108,13 @@ function validEmail(email){                          //////////////////email
     $(".email_valid").show();
     $(".email_valid").text("Enter valid eamil").css("color", "red");
 return false
-  }else{
+  }
+  else if(email.trim().length>50 ){
+    $(".email_valid").show();
+    $(".email_valid").text("Enter 50 letter eamil").css("color", "red");
+return false
+  }
+  else{
     $(".email_valid").hide();
     return true
   }
@@ -99,6 +126,12 @@ function validAddress(address)
     $(".address_valid").text("enter address").css("color", "red");
   return false    
   }
+  else if(address.trim().length<10 || address.trim().length>50 ){
+$(".address_valid").show();
+    $(".address_valid").text("enter address between 10-50 letters ").css("color", "red");
+  return false    
+
+  }
   else{
     
     $(".address_valid").hide();
@@ -109,6 +142,12 @@ function validPincode(pincode){
   if (pincode.trim() == "") {
     $(".pincode_valid").show();
     $(".pincode_valid").text("enter pincode").css("color", "red");
+    return false
+  }
+  else if (pincode.trim() < 100000 || pincode.trim() 
+    > 999909) {
+    $(".pincode_valid").show();
+    $(".pincode_valid").text("Pincode Mush Have 6 digits").css("color", "red");
     return false
   }
   
@@ -123,6 +162,12 @@ function validPrice(price){
     $(".price_valid").show();
     $(".price_valid").text("enter price").css("color", "red");
     return false
+  }
+  if(price.trim()<1){
+$(".price_valid").show();
+    $(".price_valid").text("enter valid price").css("color", "red");
+    return false
+    
   }
   
   else{

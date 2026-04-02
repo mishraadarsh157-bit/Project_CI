@@ -70,9 +70,9 @@
             <div class="col-6 ">
                 <div class="d-flex pt-5">
                     <div class="item_card col-5 ms-5 me-5 hover-cards border-top border-5 box-shadow border-danger p-3">
-                        <h1 class="text-danger">Total Users</h1><b id="total_items"></b>
+                        <h1 class="text-danger">Total Items</h1><b id="total_items"></b>
                     </div>
-                    <div class="invoice_card col-5 ms-3 hover-cards border-top border-5 box-shadow border-danger p-3"><h1 class="text-danger">Total Clients</h1><b id="total_invoice"></b></div>
+                    <div class="invoice_card col-5 ms-3 hover-cards border-top border-5 box-shadow border-danger p-3"><h1 class="text-danger">Total Invoices</h1><b id="total_invoice"></b></div>
                 </div>
             </div>
         </div>

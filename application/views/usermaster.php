@@ -36,8 +36,8 @@
             <div class="search_holder">
               <input type="text" class="search" name='search' onchange="search()">
               <button type="button" class='search_icon' onclick="search()"><i class="bi bi-search"></i></button>
-              <button type="reset" ></button>
             </div>
+            <button type="reset" onclick="resetBTN()" class="btn"><i class="bi bi-arrow-repeat"></i></button>
             <select name="" id="" class="status" onchange="search()">
               <option value="">Status</option>
               <option value="1">Active</option>
@@ -83,9 +83,9 @@
                 <input type="number" hidden disabled name='id' id='id'>
                 <!-- Name -->
                 <div class="mb-3">
-                  <label class="form-label">Name</label>
+                  <label class="form-label">Name  <sup class="text-danger">*</sup>:</label>
                   <input type="text" name="name" id="name" class="form-control"
-                  required minlength="3" maxlength="50"
+                  required minlength="3" maxlength="15"
                   pattern="^[A-Za-z]+$"
                   oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')"
                   title="Only letters allowed, no spaces (min 3 characters)">
@@ -94,9 +94,9 @@
                 
                 <!-- Email -->
                 <div class="mb-3">
-                  <label class="form-label">Email</label>
+                  <label class="form-label">Email  <sup class="text-danger">*</sup>:</label>
                   <input type="email" name="email" id="email" class="form-control"
-                  required maxlength="100"
+                  required maxlength="50"
                   oninput="this.value = this.value.replace(/\s/g, '')"
                   title="Enter a valid email without spaces">
                 <div class="email_valid text-danger"></div>
@@ -104,7 +104,7 @@
               
               <!-- Password -->
               <div class="pss mb-3">
-                <label class="form-label">Password</label>
+                <label class="form-label">Password  <sup class="text-danger">*</sup>:</label>
                 <input type="password" name="password" id="password" class="form-control"
                 required minlength="8" maxlength="20"
                 pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])[^\s]{8,}$"
@@ -115,7 +115,7 @@
               
               <!-- Phone -->
               <div class="mb-3">
-                <label class="form-label">Phone</label>
+                <label class="form-label">Phone  <sup class="text-danger">*</sup>:</label>
                 <input type="tel" name="phone" id="phone" class="form-control"
                 required pattern="^[0-9]{10}$"
                 maxlength="10"
@@ -125,10 +125,14 @@
                 </div>
                 
                 <!-- Submit -->
-                <div class="submit_area">
-                  <button type="button" id="submitForm" class="btn btn-primary w-100">
-                    Submit
-                  </button>
+                 <div class="row">
+                <div class="col-7"></div>
+                   <div class="col-5 submit_area" align='right'>
+                     <button type="button" id="submitForm" class="btn btn-outline-primary">
+                       Submit
+                      </button>
+                      <button type="reset" class="reset btn btn-outline-danger">Reset</button>
+                    </div>
                 </div>
                 
               </form>

@@ -53,10 +53,17 @@ $route['default_controller'] = 'Login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+
+////login
+
 $route['login'] = 'Login';
 $route['logged_in'] = 'Login/logged_in';
+
+///dashboard
+
 $route['dashboard'] = 'dashboard';
 $route['dashfetch'] = 'dashboard/fetch';
+$route['logout'] = 'dashboard/logout';
 
 ////user
 

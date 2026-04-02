@@ -40,8 +40,8 @@
             <div class="search_holder">
               <input type="text" class="search" name='search' onchange="search()">
               <button type="button" class='search_icon' onclick="search()"><i class="bi bi-search"></i></button>
-              <button type="reset" ></button>
             </div>
+            <button type="reset" onclick="resetBTN()" class="btn"><i class="bi bi-arrow-repeat"></i></button>
             <select name="" id="" class="status" onchange="search()">
               <option value="">Status</option>
               <option value="1">Active</option>
@@ -91,9 +91,9 @@
 
   <!-- Name -->
   <div class="mb-3 col-6">
-    <label class="form-label">Name</label>
+    <label class="form-label">Name  <sup class="text-danger">*</sup>:</label>
     <input type="text" name="name" id="name" class="form-control"
-      required minlength="3" maxlength="50"
+      required minlength="3" maxlength="15"
       pattern="^[A-Za-z]+$"
       oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')"
       title="Only letters allowed, no spaces (min 3 characters)">
@@ -102,9 +102,9 @@
 
   <!-- Email -->
   <div class="mb-3 col-6">
-    <label class="form-label">Email</label>
+    <label class="form-label">Email  <sup class="text-danger">*</sup>:</label>
     <input type="email" name="email" id="email" class="form-control"
-      required maxlength="100"
+      required maxlength="50"
       oninput="this.value = this.value.replace(/\s/g, '')"
       title="Enter a valid email without spaces">
     <div class="email_valid text-danger"></div>
@@ -112,7 +112,7 @@
 
   <!-- Phone -->
   <div class="mb-3 col-6">
-    <label class="form-label">Phone</label>
+    <label class="form-label">Phone  <sup class="text-danger">*</sup>:</label>
     <input type="tel" name="phone" id="phone" class="form-control"
       required pattern="^[0-9]{10}$"
       maxlength="10"
@@ -123,32 +123,34 @@
 
   <!-- Address -->
   <div class="mb-3 col-6">
-    <label class="form-label">Address</label>
+    <label class="form-label">Address  <sup class="text-danger">*</sup>:</label>
     <textarea name="address" id="address" class="form-control"
-      required minlength="10" maxlength="200"
+      required minlength="10" maxlength="50"
       title="Enter full address (min 10 characters)"></textarea>
       <div class="address_valid"></div>
   </div>
 
   <!-- State -->
   <div class="mb-3 col-6">
-    <label class="form-label">State</label>
+    <label class="form-label">State  <sup class="text-danger">*</sup>:</label>
     <div class="states_area"></div>
+    <div class="state_valid"></div>
   </div>
 
   <!-- City -->
   <div class="mb-3 col-6">
-    <label class="form-label">City</label>
+    <label class="form-label">City  <sup class="text-danger">*</sup>:</label>
    <div class="cities_area">
     <select name="" id="" class="form-select">
-      <option value="">select city</option>
+      <option value="">----select City----</option>
     </select>
    </div>
+   <div class="city_valid"></div>
   </div>
 
   <!-- Pincode -->
   <div class="mb-3 col-6">
-    <label class="form-label">Pincode</label>
+    <label class="form-label">Pincode  <sup class="text-danger">*</sup>:</label>
     <input type="text" name="pincode" id="pincode" class="form-control"
       required pattern="^[0-9]{6}$"
       maxlength="6"
@@ -161,11 +163,16 @@
   </div>
 
   <!-- Submit -->
-  <div class="submit_area">
-    <button type="button" id="submitForm" class="btn btn-primary w-100">
-      Submit
-    </button>
-  </div>
+    <div class="row">
+                <div class="col-7"></div>
+                   <div class="col-5 submit_area" align='right'>
+                     <button type="button" id="submitForm" class="btn btn-outline-primary">
+                       Submit
+                      </button>
+                      <button type="reset" class="reset btn btn-outline-danger">Reset</button>
+                    </div>
+                </div>
+               
 
 </div>
 </form>

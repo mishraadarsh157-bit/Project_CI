@@ -43,53 +43,54 @@ class crud_model_four extends CI_Model
             return 0;
         }
     }
-    public function itemName($value){
-    $this->db->select('*');
-    $this->db->from('items');
-    $this->db->like('item_name',$value);
-    // $this->db->limit(10); // good for autocomplete
+    public function itemName($value)
+    {
+        $this->db->select('*');
+        $this->db->from('items');
+        $this->db->like('item_name', $value);
+        // $this->db->limit(10); // good for autocomplete
 
-    $query = $this->db->get();
+        $query = $this->db->get();
 
-    if($query->num_rows() > 0){
-        // return $query;
-        return $query->result_array();
-    }else{
-        return [];
+        if ($query->num_rows() > 0) {
+            // return $query;
+            return $query->result_array();
+        } else {
+            return [];
+        }
     }
-}
 
-public function itemData($name){
-    return $this->db->where('item_name',$name)
-                        ->get('items')
-                        ->row();
-}
+    public function itemData($name)
+    {
+        return $this->db->where('item_name', $name)
+            ->get('items')
+            ->row();
+    }
 
-public function generateNo(){
+    public function generateNo()
+    {
 
- $this->db->select('InvoiceNo');
- $this->db->order_by('InvoiceNo','Desc');
- $this->db->limit(1);
- $this->db->from('invoice');
- $query = $this->db->get();
- if($query){
-    return $query->row();
- }
- else{
-    return false;
- }
-}
+        $this->db->select('InvoiceNo');
+        $this->db->order_by('InvoiceNo', 'Desc');
+        $this->db->limit(1);
+        $this->db->from('invoice');
+        $query = $this->db->get();
+        if ($query) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 
-public function insertInvoice($invoiceData,$items,$quantity)
+    public function insertInvoice($invoiceData, $items, $quantity)
     {
 
         $this->db->trans_begin();
 
-        $this->db->insert('invoice',$invoiceData);
+        $this->db->insert('invoice', $invoiceData);
 
         $invoice_id = $this->db->insert_id();
-        for($i=0; $i<count($items); $i++)
-        {
+        for ($i = 0; $i < count($items); $i++) {
 
             $itemData = [
                 'InvoiceNo' => $invoice_id,
@@ -97,85 +98,73 @@ public function insertInvoice($invoiceData,$items,$quantity)
                 'Quantity'   => $quantity[$i]
             ];
 
-            $this->db->insert('invoiceitem',$itemData);
-
+            $this->db->insert('invoiceitem', $itemData);
         }
 
-        if ($this->db->trans_status() === FALSE)
-        {
+        if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             return false;
-        }
-        else
-        {
+        } else {
             $this->db->trans_commit();
             return true;
         }
-
     }
 
 
-    
-    public function updForm($id){
-    $this->db->where('invoice.InvoiceNo',$id);
-    $this->db->from('client');
-    $this->db->join('invoice','ClientAbn=client_id','left');
-    $this->db->join('invoiceitem','InvoiceNo','left');
-    $this->db->join('items','ItemNo=item_id','left');
-    $query=$this->db->get();
-    if($query){
-        return $query->result_array();
-    }
-    else{
-        return 0;
-    }
 
+    public function updForm($id)
+    {
+        $this->db->where('invoice.InvoiceNo', $id);
+        $this->db->from('client');
+        $this->db->join('invoice', 'ClientAbn=client_id', 'left');
+        $this->db->join('invoiceitem', 'InvoiceNo', 'left');
+        $this->db->join('items', 'ItemNo=item_id', 'left');
+        $query = $this->db->get();
+        if ($query) {
+            return $query->result_array();
+        } else {
+            return 0;
+        }
     }
-////////////////////////////
-public function UpdateInvoice($id,$items,$quantity)
+    ////////////////////////////
+    public function UpdateInvoice($id, $items, $quantity)
     {
 
         $this->db->trans_begin();
-                $this->db->where("InvoiceNo", $id);
+        $this->db->where("InvoiceNo", $id);
         $upd = $this->db->delete("invoiceitem");
-        if($upd){
+        if ($upd) {
 
-        for($i=0; $i<count($items); $i++)
-        {
+            for ($i = 0; $i < count($items); $i++) {
 
-            $itemData = [
-                'InvoiceNo' => $id,
-                'ItemNo'    => $items[$i],
-                'Quantity'   => $quantity[$i]
-            ];
+                $itemData = [
+                    'InvoiceNo' => $id,
+                    'ItemNo'    => $items[$i],
+                    'Quantity'   => $quantity[$i]
+                ];
 
-            $this->db->insert('invoiceitem',$itemData);
+                $this->db->insert('invoiceitem', $itemData);
+            }
+        }
 
-        }}
-
-        if ($this->db->trans_status() === FALSE)
-        {
+        if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             return false;
-        }
-        else
-        {
+        } else {
             $this->db->trans_commit();
             return true;
         }
-
     }
-    public function mailForm($id){
-    $this->db->where('InvoiceNo',$id);
-    $this->db->from('invoice');
-    $this->db->join('client','client_id=ClientAbn','left');
-    $query=$this->db->get();
-    if($query){
-        return $query->row();
+    public function mailForm($id)
+    {
+        $this->db->where('InvoiceNo', $id);
+        $this->db->from('invoice');
+        $this->db->join('client', 'client_id=ClientAbn', 'left');
+        $query = $this->db->get();
+        if ($query) {
+            return $query->row();
+        } else {
+            return 0;
+        }
     }
-    else{
-        return 0;
-    }
-    }
-
 }
