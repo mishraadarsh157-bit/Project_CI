@@ -67,7 +67,7 @@ function fetchData(page) {
 					table += `<td class='text-primary text-center'><i  class="update_form" data-uid='${value["InvoiceNo"]}'>#INVNO${value["InvoiceNo"]}</i></td>`;
 					table += `<td class=''><i class='' >${value["client_name"]}</i></td>`;
 					table += `<td>${value["client_email"]}</td>`;
-					table += `<td>${value["phone"]}</td>`;
+					table += `<td class="text-end">${value["phone"]}</td>`;
 					table += "</tr>";
 
 					///////////////////////////////////////
@@ -167,13 +167,13 @@ function resetBTN() {
 function addMore() {
 	var row = "<tr class='border'>";
 	row +=
-		'<td class="pb-3 ps-2">Item Name <sup class="text-danger">*</sup><input type="text" name="itemName[]" maxlength="20" onchange="changeAmt()" id="item_s" class="item-name-invoice form-control" placeholder="Item Name"><div class="itemselect"></div></td>\
-<td class="pb-3 text-end pe-3"><input type="text" hidden name="itm_id[]" class="itm_Id">  Item Price<input disabled type="text" name="price[]"  onkeyup="changeAmt()" class="item-price-invoice form-control bg-white text-end" placeholder="Item Price"></td>\
-<td class="pb-3">\
-Quantity<input min="1" type="number" onchange="changeAmt()" min="1" max="100" oninput="this.value = this.value < 1 ? 1 : this.value" class="item-quantity-invoice form-control" name="quantity[]" bg-white  border border-0" value="1">\
+		'<td class="py-3 ps-2"><input type="text" name="itemName[]" maxlength="20" onchange="changeAmt()" id="item_s" class="item-name-invoice form-control" placeholder="Item Name"><div class="itemselect"></div></td>\
+<td class="py-3 text-end pe-3"><input type="text" hidden name="itm_id[]" class="itm_Id">  <input disabled type="text" name="price[]"  onkeyup="changeAmt()" class="item-price-invoice form-control bg-white text-end" placeholder="Item Price"></td>\
+<td class="py-3">\
+<input min="1" type="number" onchange="changeAmt()" min="1" max="100" oninput="this.value = this.value < 1 ? 1 : this.value" class="item-quantity-invoice form-control text-end" name="quantity[]" bg-white  border border-0" value="1">\
    </td>\
-    <td class="pb-3">Amount<input type="number" disabled placeholder="Amount" name="rowTotal[]" class="rowTotal text-end bg-white form-control"></td>\
-    <td class="pb-3"><button type="button" onclick="changeAmt()" class="removeForm btn btn-outline-danger border border-0">X</button></td></tr>\
+    <td class="py-3"><input type="number" disabled placeholder="Amount" name="rowTotal[]" class="rowTotal text-end bg-white form-control"></td>\
+    <td class="py-3"><button type="button" onclick="changeAmt()" class="removeForm btn btn-outline-danger border border-0">X</button></td></tr>\
     ';
 	$(".itemTable").append(row);
 	cutBtn();
@@ -501,14 +501,14 @@ $(document).on("click", ".update_form", function () {
 				$(".client-email-invoice").val(value["client_email"]);
 				$(".client-phone-invoice").val(value["phone"]);
 				input += "<tr class='w-100 border py-3'>";
-				input += `<td class='pb-3 ps-2'>Item Name  <sup class="text-danger">*</sup>:<input type="text" id="item_s" class="item-name-invoice form-control" maxlength="20" onchange="fetchItemData(this)" onkeyup="changeAmt()" name='itemName[]'  value="${value["item_name"]}"><div class="itemselect position-absolute"></div>
+				input += `<td class='py-3 ps-2'><input type="text" id="item_s" place-holder="Item Name" class="item-name-invoice form-control" maxlength="20" onchange="fetchItemData(this)" onkeyup="changeAmt()" name='itemName[]'  value="${value["item_name"]}"><div class="itemselect position-absolute"></div>
 					<input type="text" hidden name='itm_id[]' class='itm_Id' value="${value["item_id"]}">  </td>`;
-				input += `<td class='pb-3'>Price<input type="text" disabled class="item-price-invoice bg-white form-control"  name="price[]"  value="${value["price"]}"></td>`;
-				input += `<td class='pb-3'>Quantity<input min='1' type="number" class="item-quantity-invoice form-control"  onchange="changeAmt()" name='quantity[]'  value="${value["Quantity"]}"></td>`;
+				input += `<td class='py-3'><input type="text" placeholder="Item Price" disabled class="item-price-invoice bg-white form-control text-end"  name="price[]"  value="${value["price"]}"></td>`;
+				input += `<td class='py-3'><input min='1' type="number" class="item-quantity-invoice form-control text-end"  onchange="changeAmt()" name='quantity[]'  value="${value["Quantity"]}"></td>`;
 				let amount = Number(value["Quantity"]) * Number(value["price"]);
-				input += `<td class='pb-3'>Amount<input type="text" disabled  class="rowTotal text-end bg-white form-control"  name="rowTotal[]" value="${amount}"></td>`;
+				input += `<td class='py-3'><input type="text" disabled  class="rowTotal text-end bg-white form-control"  name="rowTotal[]" value="${amount}"></td>`;
 				input +=
-					'<td class="pb-3"><button type="button" class="removeForm btn btn-outline-danger border border-0">X</button></td>';
+					'<td class="py-3"><button type="button" class="removeForm btn btn-outline-danger border border-0">X</button></td>';
 				input += "</tr>";
 			});
 			input += "</table>";

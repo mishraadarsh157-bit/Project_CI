@@ -67,7 +67,7 @@ function fetchData(page) {
                 </td>`;
 					table += `<td class='text-primary'><i class='update_form' data-uid='${value["id"]}'>${value["name"]}</i></td>`;
 					table += `<td>${value["email"]}</td>`;
-					table += `<td>${value["phone"]}</td>`;
+					table += `<td class="text-end">${value["phone"]}</td>`;
 					if (value["STATUS"] == 1) {
 						var status =
 							'<button class="edit-btn box-shadow w-75">Active</button>';
@@ -75,7 +75,7 @@ function fetchData(page) {
 						var status =
 							'<button class="delete-btn  box-shadow w-75">Inactive</button>';
 					}
-					table += `<td>${status}</td>`;
+					table += `<td class="">${status}</td>`;
 
 					table += "</tr>";
 
@@ -346,7 +346,7 @@ $(".allusr").on("click", function () {
                 <div class="pass_valid text-danger"></div>',
 	);
 	$(".name_valid").hide();
-	$(".eamil_valid").hide();
+	$(".email_valid").hide();
 	$(".pass_valid").hide();
 	$(".number_valid").hide();
 });

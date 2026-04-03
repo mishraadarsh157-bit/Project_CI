@@ -36,21 +36,21 @@
             <div class="search_holder">
               <input type="text" class="search" name='search' onchange="search()">
               <button type="button" class='search_icon' onclick="search()"><i class="bi bi-search"></i></button>
-              
+
             </div>
-          <button type="reset" onclick="resetBTN()" class="btn"><i class="bi bi-arrow-repeat"></i></button>
+            <button type="reset" onclick="resetBTN()" class="btn"><i class="bi bi-arrow-repeat"></i></button>
             <input type="number" id="invis" value="1" hidden>
             <input type="text" class="field" value="item_id" hidden>
             <input type="text" class="order" value="desc" hidden>
-            
-            <nav class='page' aria-label="Page navigation example"></nav>
+
+            <nav class='page' aria-label="Page navigation example" style="margin-left: 50vw;"></nav>
             <select name="" id="" class="limit" onchange="limit()">
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="15">15</option>
               <option value="20">20</option>
             </select>
-            
+
           </div>
           <div class="table-data w-100 border ">
             <table class='table mb-5 table-light  table-striped table-hover '>
@@ -65,62 +65,75 @@
               </thead>
               <tbody class="load_data">
 
-                </tbody>
-                
-              </table>
-            </div>
+              </tbody>
+
+            </table>
           </div>
-          <div class="tab-pane fade" id="addUser">
-            
-            <div class="form-area p-3 bg-white border">
-              
-              <form id="myForm">
-                <div class="row w-100  mx-0 mt-4 pt-4 px-4 pb-5  ">
-                    <input type="text" name="id" disabled hidden id="id">
-                    <div class="col-6 mb-5 mt-4">
-                        Item Name  <sup class="text-danger">*</sup>:
-                        <input type="text" name='name' id="name" placeholder="Item name" class='item_name form-control ' maxlength="15">
-                        <div class="name_valid"></div>
-                    </div>
-                    <div class="col-6 mb-5 mt-4 text-end">
-                        Item Price <sup class="text-danger">*</sup>
-                        <input type="tel"  min='1' name='price' id="price" placeholder="Item Price" maxlength="5" class='form-control text-end' oninput="this.value = this.value.replace(/[^0-9]/g,''); if(this.value < 1) this.value = 1;">
-                        <div class="price_valid"></div>
-                    </div>
-                    <div class="col-12 mb-5 p-2">
-                        Item Description <sup class="text-danger">*</sup>
-                        <input type="text" name='description' id="description" maxlength="30" placeholder="Item Description" class='form-control '>
-                        <div class="des_valid"></div>
-                    </div>
-                    <div class="col-6 mb-5 p-2">
-                        Item Image <sup class="text-danger">*</sup>
-                        <div class='image_holder'>
-                            <input type="file"  name='image' accept="image/png, image/jpeg, image/jpg" onchange="itmImg(event)" id="image" class='form-control w-75'><button class="btn border border-0 btn-outline-danger" type="button" onclick="resetImage()"><i class="bi bi-x-lg"></i></button>
-                        </div>
-                        <div class="image_valid text-danger"></div>
-                    </div>
-                    <div class="col-6 mb-5 p-2"><img src="" name='image' alt="" height="100px" class="itemImage"></div>
-                    <div class="col-9 updItm">
-                        <input type="text" name='submit_item' hidden value='submititem'>
-                    </div>
-                    <div class="col-3 text-end ps-5 itemSaver">
-                        <div class="valid_item text-danger mb-3"></div>
-                        <button type="button" id="submitForm" name='' class="btn btn-outline-primary">SUBMIT</button>
-                    </div>
+        </div>
+        <div class="tab-pane fade" id="addUser">
+
+          <div class="form-area p-3 bg-white border">
+
+            <form id="myForm">
+              <div class="row w-100  mx-0 mt-4 pt-4 px-4 pb-5  ">
+                <input type="text" name="id" disabled hidden id="id">
+                <div class="col-6 mb-5 mt-4">
+                  Item Name <sup class="text-danger">*</sup>:
+                  <input type="text" name="name" id="name" placeholder="Item name"
+                    class="item_name form-control"
+                    maxlength="30"
+                    required
+                    pattern="^[A-Za-z ]+$"
+                    oninput="this.value = this.value.replace(/[^A-Za-z ]/g,'').replace(/\s+/g,' ')"
+                    title="Only letters and spaces allowed">
+                  <div class="name_valid"></div>
                 </div>
+                <div class="col-2 mb-5 mt-4 text-end">
+                  Item Price <sup class="text-danger">*</sup>
+                  <input type="tel" min='1' name='price' id="price" placeholder="Item Price" maxlength="9" class='form-control text-end' oninput="this.value = this.value.replace(/[^0-9]/g,''); if(this.value < 1) this.value = 1;">
+                  <div class="price_valid"></div>
+                </div>
+                <div class="col-8 mb-5 p-2">
+                  Item Description <sup class="text-danger">*</sup>
+                  <input type="text" name='description' id="description" maxlength="30" placeholder="Item Description" class='form-control '>
+                  <div class="des_valid"></div>
+                </div>
+                <div class="col-6 mb-5 p-2">
+                  
+                  <div class='image_holder'>
+                    <input type="file" name='image' accept="image/png, image/jpeg, image/jpg" onchange="itmImg(event)" id="image" class='image-sel '><button class="img-remove btn  border-0 btn-danger" type="button" onclick="resetImage()"><i class="bi bi-x-lg"></i></button>
+                  </div>
+                  
+                </div>
+                <div class="col-3 img-area mb-5 p-2 text-center border"><br><br><br><img src="" name='image' alt="" height="150px" class="itemImage"><br><br>
+                  <button type="button" class="btn btn-outline-warning">
+                    <label for="image">Image</label>
+
+                  </button>
+                  <div class="image_valid text-danger"></div>
+                </div>
+                <div class="col-9 updItm">
+                  <input type="text" name='submit_item' hidden value='submititem'>
+                </div>
+                <div class="col-3 text-end mt-5 ps-5 itemSaver">
+                  <div class="valid_item text-danger mb-3"></div>
+                  <button type="button" id="submitForm" name='' class="btn btn-outline-primary">SUBMIT</button>
+                  <input type="reset" onclick="resetImage()" class="btn btn-outline-danger">
+                </div>
+              </div>
             </form>
 
 
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
 </body>
 <script>
   const base_url = '<?php echo base_url(); ?>';
-const user_email='<?php  echo $_SESSION['email']?>';
+  const user_email = '<?php echo $_SESSION['email'] ?>';
 </script>
 <script src="./assets/javascript/jquery.js"></script>
 <script src="./assets/javascript/validations.js"></script>

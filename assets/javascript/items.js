@@ -235,8 +235,8 @@ function itmImg(event) {
 function resetImage() {
 	$("#item_image").val("");
 	$(".itemImage").attr("src", "");
-	$('.image_holder').html(`<input type="file"  name='image' accept="image/png, image/jpeg, image/jpg" onchange="itmImg(event)" id="image" class='form-control w-75'><button class="btn border border-0 btn-outline-danger" type="button" onclick="resetImage()"><i class="bi bi-x-lg"></i></button>
-                      `)
+	$(".image_valid").hide()
+	
 }
 
 $(document).on("click", ".update_form", function () {
@@ -321,6 +321,8 @@ $(document).on("click", "#UpdateForm", function () {
 	});
 });
 
+
+
 $(".allusr").on("click", function () {
 	$(".submit_area").html(
 		'<button type="button" id="submitForm" class="btn btn-primary w-100">Submit</button>',
@@ -337,10 +339,15 @@ $(".allusr").on("click", function () {
                 <div class="pass_valid text-danger"></div>',
 	);
 	$(".name_valid").hide();
-	$(".eamil_valid").hide();
-	$(".pass_valid").hide();
-	$(".number_valid").hide();
+	$(".price_valid").hide();
+	$(".des_valid").hide();
+	$(".image_valid").hide();
+
 	$('.itemImage').attr('src',"")
+	$(".itemSaver").html(
+				` <button type="button" id="submitForm" name='' class="btn btn-outline-primary">SUBMIT</button>
+                  <input type="reset" onclick="resetImage()" class="btn btn-outline-danger">`
+			);
 });
 
 $(document).on("click", ".delete", function () {

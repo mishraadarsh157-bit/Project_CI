@@ -11,9 +11,6 @@
   body {
     position: relative;
     height: 100vh;
-    background: white;
-    background-size: 18px 18px ;
-    background-image:url('./assets/images/dot-pattern.png.png') ;
     font-family: 'Segoe UI', sans-serif;
   }
 </style>
@@ -68,10 +65,10 @@
                   <th class='text-center'>Action</th>
                   <th class="sortable" data-column='client_name'>Name ⬍</th>
                   <th class="sortable" data-column='client_email'>Email ⬍</th>
-                  <th class="sortable" data-column='phone'>Phone ⬍</th>
+                  <th class="sortable text-end" data-column='phone'>Phone ⬍</th>
                   <th>Address</th>
-                  <th>Pincode</th>
-                  <th>Status</th>
+                  <th class="text-end">Pincode</th>
+                  <th class="ps-4">Status</th>
                 </tr>
               </thead>
               <tbody class="load_data">
@@ -93,10 +90,10 @@
   <div class="mb-3 col-6">
     <label class="form-label">Name  <sup class="text-danger">*</sup>:</label>
     <input type="text" name="name" id="name" class="form-control"
-      required minlength="3" maxlength="15"
-      pattern="^[A-Za-z]+$"
-      oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')"
-      title="Only letters allowed, no spaces (min 3 characters)">
+      required minlength="3" maxlength="30"
+      pattern="^[A-Za-z ]+$"
+      oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '')"
+      title="Only letters and spaces allowed (min 3 characters)">
     <div class="name_valid text-danger"></div>
   </div>
 

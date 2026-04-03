@@ -67,9 +67,9 @@ function fetchData(page) {
                 </td>`;
 					table += `<td class='text-primary'><i class='update_form' data-uid='${value["client_id"]}'>${value["client_name"]}</i></td>`;
 					table += `<td>${value["client_email"]}</td>`;
-					table += `<td>${value["phone"]}</td>`;
-					table += `<td>${value["address"]},${value["city"]} (${value["name"]})</td>`;
-					table += `<td>${value["pincode"]}</td>`;
+					table += `<td class="text-end">${value["phone"]}</td>`;
+					table += `<td class="">${value["address"]},${value["city"]} (${value["name"]})</td>`;
+					table += `<td class="text-end">${value["pincode"]}</td>`;
 					if (value["client_status"] == 1) {
 						var status =
 							'<button class="edit-btn box-shadow w-75">Active</button>';
@@ -77,7 +77,7 @@ function fetchData(page) {
 						var status =
 							'<button class="delete-btn  box-shadow w-75">Inactive</button>';
 					}
-					table += `<td>${status}</td>`;
+					table += `<td class="width-50">${status}</td>`;
 
 					table += "</tr>";
 

@@ -64,8 +64,8 @@
                   <th class='text-center'>Action</th>
                   <th class="sortable" data-column='name'>Name ⬍</th>
                   <th class="sortable" data-column='email'>Email ⬍</th>
-                  <th class="sortable" data-column='phone'>Phone ⬍</th>
-                  <th>Status</th>
+                  <th class="sortable text-end" data-column='phone'>Phone ⬍</th>
+                  <th class="ps-5">Status</th>
                 </tr>
               </thead>
               <tbody class="load_data">
@@ -85,10 +85,10 @@
                 <div class="mb-3">
                   <label class="form-label">Name  <sup class="text-danger">*</sup>:</label>
                   <input type="text" name="name" id="name" class="form-control"
-                  required minlength="3" maxlength="15"
-                  pattern="^[A-Za-z]+$"
-                  oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')"
-                  title="Only letters allowed, no spaces (min 3 characters)">
+       required minlength="3" maxlength="30"
+       pattern="^[A-Za-z ]+$"
+       oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '').replace(/\s+/g,' ')"
+       title="Only letters and spaces allowed (min 3 characters)">
                   <div class="name_valid text-danger"></div>
                 </div>
                 

@@ -20,7 +20,6 @@ function validName(name) {            ////////////////////////////////name
     return true;
     }
 }
-
  $('.zee').hide()
         $('.img').on('click',function(){
             $('.zee').toggle()
@@ -106,12 +105,12 @@ function validEmail(email){                          //////////////////email
     return false
  }else if(regex.test(email.trim())==false){
     $(".email_valid").show();
-    $(".email_valid").text("Enter valid eamil").css("color", "red");
+    $(".email_valid").text("Enter valid email").css("color", "red");
 return false
   }
   else if(email.trim().length>50 ){
     $(".email_valid").show();
-    $(".email_valid").text("Enter 50 letter eamil").css("color", "red");
+    $(".email_valid").text("Enter 50 letter email").css("color", "red");
 return false
   }
   else{
@@ -126,9 +125,9 @@ function validAddress(address)
     $(".address_valid").text("enter address").css("color", "red");
   return false    
   }
-  else if(address.trim().length<10 || address.trim().length>50 ){
+  else if(address.trim().length<2 || address.trim().length>50 ){
 $(".address_valid").show();
-    $(".address_valid").text("enter address between 10-50 letters ").css("color", "red");
+    $(".address_valid").text("enter address between 2-50 letters ").css("color", "red");
   return false    
 
   }
@@ -163,7 +162,14 @@ function validPrice(price){
     $(".price_valid").text("enter price").css("color", "red");
     return false
   }
-  if(price.trim()<1){
+  
+  else if(price.trim()>99999999){
+$(".price_valid").show();
+    $(".price_valid").text("This Item Price Is too High").css("color", "red");
+    return false
+    
+  }
+  else if(price.trim()<1){
 $(".price_valid").show();
     $(".price_valid").text("enter valid price").css("color", "red");
     return false
@@ -238,16 +244,18 @@ $("#image").on("change", function () {
 
     // Type check
     if (!allowedTypes.includes(file.type)) {
+      $(".image_valid").show()
         $(".image_valid").text("Only JPG, JPEG, PNG allowed");
         this.value = "";
-        return;
+        return false;
     }
 
     // Size check
     if (file.size > maxSize) {
+      $(".image_valid").show()
         $(".image_valid").text("Max size is 2MB");
         this.value = "";
-        return;
+        return false;
     }
 
     $(".image_valid").text(""); // clear error

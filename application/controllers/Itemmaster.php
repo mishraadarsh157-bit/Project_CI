@@ -106,13 +106,13 @@ class Itemmaster extends CI_controller
                 // ❌ type validation
                 if (!in_array($file_type, $allowed_types)) {
                     echo "invalid Only JPG, JPEG, PNG allowed";
-                    return;
+                    return false;
                 }
 
                 // ❌ size validation
                 if ($file_size > $max_size) {
                     echo "invalid Max size is 2MB";
-                    return;
+                    return false;
                 }
 
                 // ✅ upload
