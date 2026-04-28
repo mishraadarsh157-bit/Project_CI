@@ -21,7 +21,6 @@ You can add code, images, anything here.
 
 🔁 Change the Main Branch To 👉 Adarsh branch to access all the   files and all code
 
-![Demo](https://your-image-link.gif)
 
 | Feature | Status |
 |--------|--------|
